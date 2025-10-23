@@ -1,0 +1,336 @@
+@import std://make.convo
+@import ./context/vars.convo
+
+> define
+codingModel='gpt-5'
+imageGenModel='open-router/google/gemini-2.5-flash-image-preview'
+
+Screen=struct(
+
+    # User friendly name of the screen
+    name:string
+
+    # Route within the pages directory of a NextJS app. Route parameters should use square brackets
+    # and should NOT include a file extension.
+    #
+    # - Example of route to profile page: profile
+    # - Example of a route to a task detail page: task/[taskId]
+    route:string
+    
+    # A short description of the screen
+    description:string
+)
+
+Component=struct(
+    # TypeScript name of the component
+    name:string;
+    # A short description of the component
+    description:string;
+    # A TypeScript interface describing the props of the component.
+    propsInterface:string;
+
+    # Example of how to import the components - import { COMPONENT_NAME } from "@/components/COMPONENT_NAME"
+    import:string;
+)
+
+> app makeApp
+    name:appName
+    port:appPort
+    dir:appDir
+    httpRoot:appHttpRoot
+
+> stage docs-assets
+    model: codingModel
+
+> target app-description
+    context: array(
+        {path: 'context/app.md' tag:'app-description'}
+        {path: 'context/screens/**.md' tag:'screen'}
+        {path: 'context/components/**.md' tag:'component'}
+        {path: 'context/concept.md' tag:'concept'}
+        {path: 'context/coding-rules.md' tag:'coding-rules'}
+        {path: 'context/style.md' tag:'styling'}
+        {path: '.editorconfig' tag:'editor-config'}
+    )
+    out: 'docs/app-description.md'
+    ===
+    Generate a detailed description of the {{appName}} app using the content in the `app-description`, 
+    `concept` and `screen` tags in markdown format. Use H2 and H3 headers to separate sections and
+    subsections.
+
+    Try to fit in the concepts and features of the concept when possible while using the screens
+    defined in the app-description.
+    
+    Include the following:
+    - List of features
+    - List of screens with a description and route.
+      - Use the Screens section in the `app-description` tag to create the list of screens
+    ===
+
+> target tailwinds
+    context: array(
+        {path: 'docs/app-description.md' tag:'app-description'}
+        {path: 'context/concept.md' tag:'concept'}
+        {path: 'context/coding-rules.md' tag:'coding-rules'}
+        {path: 'context/style.md' tag:'styling'}
+        {path: 'context/tailwind.md' tag:'tailwind-rules'}
+        {path: '.editorconfig' tag:'editor-config'}
+    )
+    out: 'styles/globals.css'
+    ===
+    Generate a Tailwinds v4 theme.
+    ===
+
+> target style-guide
+    context: array(
+        {path: 'docs/app-description.md' tag:'app-description'}
+        {path: 'context/concept.md' tag:'concept'}
+        {path: 'context/coding-rules.md' tag:'coding-rules'}
+        {path: 'context/style.md' tag:'styling'}
+        {path: 'context/tailwind.md' tag:'tailwind-rules'}
+        {path: '.editorconfig' tag:'editor-config'}
+        {path: 'styles/globals.css' tag:'tailwind-theme'}
+    )
+    out: 'docs/style-guide.md'
+    ===
+    Generate a guide showing how to use the `tailwind-theme`. Include examples using it in HTML
+    fenced code blocks.
+    ===
+
+
+> target db-schema
+    context: array(
+        {path: 'docs/app-description.md' tag:'app-description'}
+        {path: 'context/coding-rules.md' tag:'coding-rules'}
+        {path: '.editorconfig' tag:'editor-config'}
+    )
+    out: 'supabase/schemas/db-schema.sql'
+    ===
+    Generate a database schema as an SQL file. Do not include any seed data. The schema should
+    only define table structure, enumerated types, indexes and other structural database entities.
+
+    Make sure to include the "Required Entities" from `coding-rules`.
+
+    The schema will be used to create a database using Supabase. Do not include auth properties
+    for user sign-in, that will be handled by Supabase.
+
+    User singular form names for tables and types.
+
+    Use modern Postgres SQL syntax.
+    - Use the `constraint` keyword to define constraints in create table statements.
+    - Use the `references` within constraints to reference foreign key relations.
+    - Do not use the TABLESPACE keyword
+    - The primary key of all tables should be named `id` and use a data type of `uuid` -> `id uuid not null default gen_random_uuid ()`
+    - Do not create any functions or triggers or views
+    - Add comments to columns and tables by using standard SQL statements located on the line above table and column definitions
+    - Do not use generated column
+    - Add comments to columns and tables by using standard SQL statements located on the line above table and column definitions
+
+    Comment examples:
+    ``` sql
+    -- A user
+    create table public.user (
+        -- Unique id of the user
+        id uuid not null default gen_random_uuid(),
+        
+        -- Name of the user
+        name text not null;
+    );
+    ```
+    ===
+
+> target types
+    in: 'supabase/schemas/db-schema.sql'
+    shell: 'npx pg-schema-gen --sql-file {{mkt('in.0')}} --out lib/schema'
+    out: 'lib/schema.ts'
+
+
+> target screen-list
+    context: array(
+        {path: 'docs/app-description.md' tag:'app-description'}
+        {path: 'lib/schema/types-ts.ts' tag: 'types'}
+    )
+    out: 'docs/screens.json'
+    outListType: Screen
+    ===
+    Create a list of screens based on the app-description
+    ===
+
+> target main-layout-description
+    context: array(
+        {path: 'docs/app-description.md' tag:'app-description'}
+        {path: 'context/coding-rules.md' tag:'coding-rules'}
+        {path: 'lib/schema/types-ts.ts' tag: 'types'}
+        {path: 'context/style.md' tag:'styling'}
+        {path: 'docs/style-guide.md' tag:'style-guide'}
+        {path: 'docs/screens.json' tag:'all-screens'}
+        {path: '.editorconfig' tag:'editor-config'}
+    )
+    out: 'docs/main-layout.md'
+    ===
+    Generate a description of the main layout component of the app. The main layout should
+    include a navigation bar at the top of the screen that collapses on mobile when an 
+    expand button.
+
+    Include a list of all navigation links.
+    
+    The main nav should include a user switcher.
+
+    The main layout should accept a single children prop that will render the screens / pages of
+    the app.
+    ===
+
+> target main-layout
+    context: array(
+        {path: 'docs/app-description.md' tag:'app-description'}
+        {path: 'docs/screens.json' tag:'all-screens'}
+        {path: 'context/coding-rules.md' tag:'coding-rules'}
+        {path: 'lib/schema/types-ts.ts' tag: 'types'}
+        {path: 'context/style.md' tag:'styling'}
+        {path: 'docs/style-guide.md' tag:'style-guide'}
+        {path: 'docs/main-layout.md' tag:'main-layout'}
+        {path: '.editorconfig' tag:'editor-config'}
+    )
+    out: 'components/MainLayout.tsx'
+    ===
+    Generate a MainLayout component based on the `main-layout` tag.
+
+    The MainLayout should be exported by the name `MainLayout` => `export function MainLayout({children}:MainLayoutProps)`
+
+    The MainLayout should include collapsible navigation.
+
+    ## Fullscreen Mode:
+    Pages can request to enter into fullscreen. Use the `useIsInFullPageMode` hook imported from 
+    `@/lib/hooks` to check if the page should be displayed in fullscreen mode. If useIsInFullPageMode
+    returns true hide the main navigation and any other UI other than the page content using CSS,
+    DO NOT change the render order or do anything that should cause the page to be unmounted.
+    ===
+
+> target component-list
+    context: array(
+        {path: 'docs/app-description.md' tag:'app-description'}
+        {path: 'docs/screens.json' tag:'all-screens'}
+        {path: 'context/coding-rules.md' tag:'coding-rules'}
+        {path: 'lib/schema/types-ts.ts' tag: 'types'}
+        {path: '.editorconfig' tag:'editor-config'}
+        {path: 'context/components/*.md' tag:'components'}
+    )
+    outListType: Component
+    out: 'docs/components.json'
+    ===
+    Generate a list of components based on the components.
+    ===
+
+> target component-descriptions
+    context: array(
+        {path: 'docs/app-description.md' tag:'app-description'}
+        {path: 'docs/screens.json' tag:'all-screens'}
+        {path: 'context/coding-rules.md' tag:'coding-rules'}
+        {path: 'lib/schema/types-ts.ts' tag: 'types'}
+        {path: 'context/style.md' tag:'styling'}
+        {path: 'docs/style-guide.md' tag:'style-guide'}
+        {path: '.editorconfig' tag:'editor-config'}
+    )
+    inList: 'docs/components.json'
+    inputTag: 'component'
+    outNameProp: 'name'
+    out: 'docs/components/*.md'
+    ===
+    Generate a detailed description of the component
+    ===
+
+> target screen-descriptions
+    context: array(
+        {path: 'docs/app-description.md' tag:'app-description'}
+        {path: 'context/coding-rules.md' tag:'coding-rules'}
+        {path: 'lib/schema/types-ts.ts' tag: 'types'}
+        {path: 'context/style.md' tag:'styling'}
+        {path: 'docs/style-guide.md' tag:'style-guide'}
+        {path: 'docs/main-layout.md' tag:'main-layout'}
+        {path: 'docs/screens.json' tag:'all-screens'}
+        {path: 'docs/components.json' tag:'components'}
+    )
+    inList: 'docs/screens.json'
+    out: 'docs/screens/*.md'
+    outNameProp: 'route'
+    ===
+    Generate a detailed description of the screen in markdown format. The description should not
+    replicate functionally of the main-layout unless it is part of the main content of the screen.
+
+    The description should include the following sections:
+    - Name of screen
+    - Description
+    - The route of the screen
+    - Actions: List of actions the user should be able to preform
+    - Links: List of links to other routes. Should not include links in the main navigation of the app.
+
+    Example:
+    <example-screen-description>
+    # Screen Description
+    
+    Name: {Name of screen}
+    Route: {route}
+
+    ## Description
+    {Detailed Description}
+
+    ## Actions
+    {Bullet list of actions the user can preform on the screen}
+
+    ## Links
+    - profile: link to user profile
+    - profile/[profileId]: link to public profile
+    </example-screen-description>
+    ===
+
+> define
+screenContext = array(
+    {path: 'docs/app-description.md' tag:'app-description'}
+    {path: 'docs/screens.json' tag:'all-screens'}
+    {path: 'docs/components.json' tag:'components'}
+    {path: 'context/coding-rules.md' tag:'coding-rules'}
+    {path: 'lib/schema/types-ts.ts' tag: 'types'}
+    {path: 'context/style.md' tag:'styling'}
+    {path: 'docs/style-guide.md' tag:'style-guide'}
+    {path: 'docs/main-layout.md' tag:'main-layout'}
+    {path: '.editorconfig' tag:'editor-config'}
+)
+
+> target components
+    context: screenContext
+    deps: 'component-descriptions'
+    in: 'docs/components/**.md'
+    inputTag:'component-description'
+    out: 'components/*.tsx'
+    ===
+    Generate a React component based on the `component-description`.
+    ===
+
+> target screens
+    context: screenContext
+    deps: array('screens-descriptions' 'components' )
+    in: 'docs/screens/**.md'
+    inputTag:'screen-description'
+    out: 'pages/*.tsx'
+    ===
+    Generate a NextJS page based on the `screen-description`.
+    ===
+
+
+
+// > target tests
+//     context: array(
+//         {path: 'docs/app-description.md' tag:'app-description'}
+//         {path: 'docs/screens.json' tag:'all-screens'}
+//     )
+//     deps: 'screens-descriptions'
+//     in: 'docs/screens/**.md'
+//     inputTag:'screen-description'
+//     out: 'docs/screen-tests/*.md'
+//     ===
+//     Generate a simple set of tests to test all the features of the screens. The tests should be 
+//     should be a smile bullet list of short sentences describing features to test.
+
+//     The test should be able to be completed by a human in 10 minutes or less. Do not include more
+//     than 25 bullet points.
+//     ===

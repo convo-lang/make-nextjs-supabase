@@ -1,0 +1,5 @@
+> define
+appName='ExampleApp'
+appPort=3000
+appDir='.'
+appHttpRoot='pages'
