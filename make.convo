@@ -47,19 +47,15 @@ Component=struct(
         {path: 'context/app.md' tag:'app-description'}
         {path: 'context/screens/**.md' tag:'screen'}
         {path: 'context/components/**.md' tag:'component'}
-        {path: 'context/concept.md' tag:'concept'}
         {path: 'context/coding-rules.md' tag:'coding-rules'}
         {path: 'context/style.md' tag:'styling'}
         {path: '.editorconfig' tag:'editor-config'}
     )
     out: 'docs/app-description.md'
     ===
-    Generate a detailed description of the {{appName}} app using the content in the `app-description`, 
-    `concept` and `screen` tags in markdown format. Use H2 and H3 headers to separate sections and
+    Generate a detailed description of the {{appName}} app using the content in the `app-description`
+    and `screen` tags in markdown format. Use H2 and H3 headers to separate sections and
     subsections.
-
-    Try to fit in the concepts and features of the concept when possible while using the screens
-    defined in the app-description.
     
     Include the following:
     - List of features
@@ -70,7 +66,6 @@ Component=struct(
 > target tailwinds
     context: array(
         {path: 'docs/app-description.md' tag:'app-description'}
-        {path: 'context/concept.md' tag:'concept'}
         {path: 'context/coding-rules.md' tag:'coding-rules'}
         {path: 'context/style.md' tag:'styling'}
         {path: 'context/tailwind.md' tag:'tailwind-rules'}
@@ -84,7 +79,6 @@ Component=struct(
 > target style-guide
     context: array(
         {path: 'docs/app-description.md' tag:'app-description'}
-        {path: 'context/concept.md' tag:'concept'}
         {path: 'context/coding-rules.md' tag:'coding-rules'}
         {path: 'context/style.md' tag:'styling'}
         {path: 'context/tailwind.md' tag:'tailwind-rules'}
@@ -147,13 +141,14 @@ Component=struct(
 
 > target screen-list
     context: array(
+        {path: 'context/screens/**.md' tag:'screen'}
         {path: 'docs/app-description.md' tag:'app-description'}
         {path: 'lib/schema/types-ts.ts' tag: 'types'}
     )
     out: 'docs/screens.json'
     outListType: Screen
     ===
-    Create a list of screens based on the app-description
+    Create a list of screens
     ===
 
 > target main-layout-description
@@ -174,7 +169,7 @@ Component=struct(
 
     Include a list of all navigation links.
     
-    The main nav should include a user switcher.
+    The main nav should include an account switcher.
 
     The main layout should accept a single children prop that will render the screens / pages of
     the app.
@@ -198,12 +193,6 @@ Component=struct(
     The MainLayout should be exported by the name `MainLayout` => `export function MainLayout({children}:MainLayoutProps)`
 
     The MainLayout should include collapsible navigation.
-
-    ## Fullscreen Mode:
-    Pages can request to enter into fullscreen. Use the `useIsInFullPageMode` hook imported from 
-    `@/lib/hooks` to check if the page should be displayed in fullscreen mode. If useIsInFullPageMode
-    returns true hide the main navigation and any other UI other than the page content using CSS,
-    DO NOT change the render order or do anything that should cause the page to be unmounted.
     ===
 
 > target component-list
@@ -318,19 +307,19 @@ screenContext = array(
 
 
 
-// > target tests
-//     context: array(
-//         {path: 'docs/app-description.md' tag:'app-description'}
-//         {path: 'docs/screens.json' tag:'all-screens'}
-//     )
-//     deps: 'screens-descriptions'
-//     in: 'docs/screens/**.md'
-//     inputTag:'screen-description'
-//     out: 'docs/screen-tests/*.md'
-//     ===
-//     Generate a simple set of tests to test all the features of the screens. The tests should be 
-//     should be a smile bullet list of short sentences describing features to test.
+> target tests
+    context: array(
+        {path: 'docs/app-description.md' tag:'app-description'}
+        {path: 'docs/screens.json' tag:'all-screens'}
+    )
+    deps: 'screens-descriptions'
+    in: 'docs/screens/**.md'
+    inputTag:'screen-description'
+    out: 'docs/screen-tests/*.md'
+    ===
+    Generate a simple set of tests to test all the features of the screens. The tests should be 
+    should be a smile bullet list of short sentences describing features to test.
 
-//     The test should be able to be completed by a human in 10 minutes or less. Do not include more
-//     than 25 bullet points.
-//     ===
+    The test should be able to be completed by a human in 10 minutes or less. Do not include more
+    than 25 bullet points.
+    ===
