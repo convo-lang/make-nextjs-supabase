@@ -49,6 +49,17 @@ Example of how to use pseudo classes and pseudo elements with utility classes se
 }
 </good-examples>
 
+## Utility class values with spaces
+When using utility classes that define arbitrary values and the values contain a space remember to
+replace the spaces with underscores.
+
+Utility class value with space example:
+``` css
+.example{
+    @apply bg-[url("data:image/svg+xml,%3Csvg_width='12'_height='8'_viewBox='0_0_12_8'_xmlns='http://www.w3.org/2000/svg'%3E%3Cpath_d='M1_1.5L6_6.5L11_1.5'_stroke='%236b7280'_stroke-width='1.5'_stroke-linecap='round'_stroke-linejoin='round'/%3E%3C/svg%3E")];
+}
+```
+
 ## Components
 If a component has multiple variants with shared styles define a "base" utility class to apply to
 the variants.
