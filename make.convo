@@ -205,7 +205,7 @@ Component=struct(
     outListType: Component
     out: 'docs/components.json'
     ===
-    Generate a list of components based on the components.
+    Generate a list of components based on the `component` tags.
     ===
 
 > target component-descriptions
