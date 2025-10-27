@@ -20,6 +20,35 @@ Utility classes can not use Pseudo-class or Pseudo-element selectors. Pseudo sel
 apply in the class name of the element using the utility class or in the components applying the
 utility
 
+Example of how NOT to use pseudo classes and pseudo elements with utility classes selectors:
+<bad-examples>
+@utility input-base:hover{
+    outline:1px solid var(--color-brand);
+}
+@utility input-base::placeholder{
+    color:var(--muted);
+}
+</bad-examples>
+
+Example of how to use pseudo classes and pseudo elements with utility classes selectors:
+<good-examples>
+@utility input-base-hover{
+    outline:1px solid var(--color-brand);
+}
+@utility input-base-placeholder{
+    color:var(--muted);
+}
+
+@layer components{
+    .input:hover{
+        @apply input-base-hover;
+    }
+    .input::placeholder{
+        @apply input-base-placeholder;
+    }
+}
+</good-examples>
+
 ## Components
 If a component has multiple variants with shared styles define a "base" utility class to apply to
 the variants.

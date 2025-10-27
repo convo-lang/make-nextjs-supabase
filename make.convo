@@ -113,12 +113,10 @@ Component=struct(
     Use modern Postgres SQL syntax.
     - Use the `constraint` keyword to define constraints in create table statements.
     - Use the `references` within constraints to reference foreign key relations.
-    - Do not use the TABLESPACE keyword
     - The primary key of all tables should be named `id` and use a data type of `uuid` -> `id uuid not null default gen_random_uuid ()`
     - Do not create any functions or triggers or views
     - Add comments to columns and tables by using standard SQL statements located on the line above table and column definitions
-    - Do not use generated column
-    - Add comments to columns and tables by using standard SQL statements located on the line above table and column definitions
+    - Do not use generated / computed columns
 
     Comment examples:
     ``` sql
