@@ -1,0 +1,2069 @@
+{
+    "version": 170004,
+    "stmts": [
+        {
+            "stmt": {
+                "CreateExtensionStmt": {
+                    "extname": "pgcrypto",
+                    "if_not_exists": true,
+                    "options": [
+                        {
+                            "DefElem": {
+                                "defname": "schema",
+                                "arg": {
+                                    "String": {
+                                        "sval": "public"
+                                    }
+                                },
+                                "defaction": "DEFELEM_UNSPEC",
+                                "location": 84
+                            }
+                        }
+                    ]
+                }
+            },
+            "stmt_len": 97
+        },
+        {
+            "stmt": {
+                "CreateEnumStmt": {
+                    "typeName": [
+                        {
+                            "String": {
+                                "sval": "public"
+                            }
+                        },
+                        {
+                            "String": {
+                                "sval": "user_role"
+                            }
+                        }
+                    ],
+                    "vals": [
+                        {
+                            "String": {
+                                "sval": "guest"
+                            }
+                        },
+                        {
+                            "String": {
+                                "sval": "default"
+                            }
+                        },
+                        {
+                            "String": {
+                                "sval": "manager"
+                            }
+                        },
+                        {
+                            "String": {
+                                "sval": "admin"
+                            }
+                        }
+                    ]
+                }
+            },
+            "stmt_location": 98,
+            "stmt_len": 139
+        },
+        {
+            "stmt": {
+                "CreateEnumStmt": {
+                    "typeName": [
+                        {
+                            "String": {
+                                "sval": "public"
+                            }
+                        },
+                        {
+                            "String": {
+                                "sval": "task_status"
+                            }
+                        }
+                    ],
+                    "vals": [
+                        {
+                            "String": {
+                                "sval": "active"
+                            }
+                        },
+                        {
+                            "String": {
+                                "sval": "completed"
+                            }
+                        },
+                        {
+                            "String": {
+                                "sval": "archived"
+                            }
+                        }
+                    ]
+                }
+            },
+            "stmt_location": 238,
+            "stmt_len": 112
+        },
+        {
+            "stmt": {
+                "CreateStmt": {
+                    "relation": {
+                        "schemaname": "public",
+                        "relname": "user",
+                        "inh": true,
+                        "relpersistence": "p",
+                        "location": 376
+                    },
+                    "tableElts": [
+                        {
+                            "ColumnDef": {
+                                "colname": "id",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "uuid"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 428
+                                },
+                                "is_local": true,
+                                "constraints": [
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_NOTNULL",
+                                            "location": 433
+                                        }
+                                    },
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_DEFAULT",
+                                            "raw_expr": {
+                                                "FuncCall": {
+                                                    "funcname": [
+                                                        {
+                                                            "String": {
+                                                                "sval": "gen_random_uuid"
+                                                            }
+                                                        }
+                                                    ],
+                                                    "funcformat": "COERCE_EXPLICIT_CALL",
+                                                    "location": 450
+                                                }
+                                            },
+                                            "location": 442
+                                        }
+                                    }
+                                ],
+                                "location": 425
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "created_at",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "timestamptz"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 527
+                                },
+                                "is_local": true,
+                                "constraints": [
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_NOTNULL",
+                                            "location": 539
+                                        }
+                                    },
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_DEFAULT",
+                                            "raw_expr": {
+                                                "FuncCall": {
+                                                    "funcname": [
+                                                        {
+                                                            "String": {
+                                                                "sval": "now"
+                                                            }
+                                                        }
+                                                    ],
+                                                    "funcformat": "COERCE_EXPLICIT_CALL",
+                                                    "location": 556
+                                                }
+                                            },
+                                            "location": 548
+                                        }
+                                    }
+                                ],
+                                "location": 516
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "updated_at",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "timestamptz"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 626
+                                },
+                                "is_local": true,
+                                "constraints": [
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_NOTNULL",
+                                            "location": 638
+                                        }
+                                    },
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_DEFAULT",
+                                            "raw_expr": {
+                                                "FuncCall": {
+                                                    "funcname": [
+                                                        {
+                                                            "String": {
+                                                                "sval": "now"
+                                                            }
+                                                        }
+                                                    ],
+                                                    "funcformat": "COERCE_EXPLICIT_CALL",
+                                                    "location": 655
+                                                }
+                                            },
+                                            "location": 647
+                                        }
+                                    }
+                                ],
+                                "location": 615
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "name",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "text"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 701
+                                },
+                                "is_local": true,
+                                "constraints": [
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_NOTNULL",
+                                            "location": 706
+                                        }
+                                    }
+                                ],
+                                "location": 696
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "email",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "text"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 769
+                                },
+                                "is_local": true,
+                                "constraints": [
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_NOTNULL",
+                                            "location": 774
+                                        }
+                                    }
+                                ],
+                                "location": 763
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "profile_image_path",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "text"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 915
+                                },
+                                "is_local": true,
+                                "location": 896
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "hero_image_path",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "text"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 1046
+                                },
+                                "is_local": true,
+                                "location": 1030
+                            }
+                        },
+                        {
+                            "Constraint": {
+                                "contype": "CONSTR_PRIMARY",
+                                "conname": "user_pkey",
+                                "keys": [
+                                    {
+                                        "String": {
+                                            "sval": "id"
+                                        }
+                                    }
+                                ],
+                                "location": 1057
+                            }
+                        },
+                        {
+                            "Constraint": {
+                                "contype": "CONSTR_UNIQUE",
+                                "conname": "user_email_unique",
+                                "keys": [
+                                    {
+                                        "String": {
+                                            "sval": "email"
+                                        }
+                                    }
+                                ],
+                                "location": 1100
+                            }
+                        }
+                    ],
+                    "oncommit": "ONCOMMIT_NOOP"
+                }
+            },
+            "stmt_location": 351,
+            "stmt_len": 794
+        },
+        {
+            "stmt": {
+                "CreateStmt": {
+                    "relation": {
+                        "schemaname": "public",
+                        "relname": "account",
+                        "inh": true,
+                        "relpersistence": "p",
+                        "location": 1197
+                    },
+                    "tableElts": [
+                        {
+                            "ColumnDef": {
+                                "colname": "id",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "uuid"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 1253
+                                },
+                                "is_local": true,
+                                "constraints": [
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_NOTNULL",
+                                            "location": 1258
+                                        }
+                                    },
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_DEFAULT",
+                                            "raw_expr": {
+                                                "FuncCall": {
+                                                    "funcname": [
+                                                        {
+                                                            "String": {
+                                                                "sval": "gen_random_uuid"
+                                                            }
+                                                        }
+                                                    ],
+                                                    "funcformat": "COERCE_EXPLICIT_CALL",
+                                                    "location": 1275
+                                                }
+                                            },
+                                            "location": 1267
+                                        }
+                                    }
+                                ],
+                                "location": 1250
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "created_at",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "timestamptz"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 1355
+                                },
+                                "is_local": true,
+                                "constraints": [
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_NOTNULL",
+                                            "location": 1367
+                                        }
+                                    },
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_DEFAULT",
+                                            "raw_expr": {
+                                                "FuncCall": {
+                                                    "funcname": [
+                                                        {
+                                                            "String": {
+                                                                "sval": "now"
+                                                            }
+                                                        }
+                                                    ],
+                                                    "funcformat": "COERCE_EXPLICIT_CALL",
+                                                    "location": 1384
+                                                }
+                                            },
+                                            "location": 1376
+                                        }
+                                    }
+                                ],
+                                "location": 1344
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "updated_at",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "timestamptz"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 1457
+                                },
+                                "is_local": true,
+                                "constraints": [
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_NOTNULL",
+                                            "location": 1469
+                                        }
+                                    },
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_DEFAULT",
+                                            "raw_expr": {
+                                                "FuncCall": {
+                                                    "funcname": [
+                                                        {
+                                                            "String": {
+                                                                "sval": "now"
+                                                            }
+                                                        }
+                                                    ],
+                                                    "funcformat": "COERCE_EXPLICIT_CALL",
+                                                    "location": 1486
+                                                }
+                                            },
+                                            "location": 1478
+                                        }
+                                    }
+                                ],
+                                "location": 1446
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "name",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "text"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 1538
+                                },
+                                "is_local": true,
+                                "constraints": [
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_NOTNULL",
+                                            "location": 1543
+                                        }
+                                    }
+                                ],
+                                "location": 1533
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "logo_image_path",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "text"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 1645
+                                },
+                                "is_local": true,
+                                "location": 1629
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "hero_image_path",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "text"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 1743
+                                },
+                                "is_local": true,
+                                "location": 1727
+                            }
+                        },
+                        {
+                            "Constraint": {
+                                "contype": "CONSTR_PRIMARY",
+                                "conname": "account_pkey",
+                                "keys": [
+                                    {
+                                        "String": {
+                                            "sval": "id"
+                                        }
+                                    }
+                                ],
+                                "location": 1754
+                            }
+                        }
+                    ],
+                    "oncommit": "ONCOMMIT_NOOP"
+                }
+            },
+            "stmt_location": 1146,
+            "stmt_len": 650
+        },
+        {
+            "stmt": {
+                "CreateStmt": {
+                    "relation": {
+                        "schemaname": "public",
+                        "relname": "account_membership",
+                        "inh": true,
+                        "relpersistence": "p",
+                        "location": 1854
+                    },
+                    "tableElts": [
+                        {
+                            "ColumnDef": {
+                                "colname": "id",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "uuid"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 1932
+                                },
+                                "is_local": true,
+                                "constraints": [
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_NOTNULL",
+                                            "location": 1937
+                                        }
+                                    },
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_DEFAULT",
+                                            "raw_expr": {
+                                                "FuncCall": {
+                                                    "funcname": [
+                                                        {
+                                                            "String": {
+                                                                "sval": "gen_random_uuid"
+                                                            }
+                                                        }
+                                                    ],
+                                                    "funcformat": "COERCE_EXPLICIT_CALL",
+                                                    "location": 1954
+                                                }
+                                            },
+                                            "location": 1946
+                                        }
+                                    }
+                                ],
+                                "location": 1929
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "created_at",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "timestamptz"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 2037
+                                },
+                                "is_local": true,
+                                "constraints": [
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_NOTNULL",
+                                            "location": 2049
+                                        }
+                                    },
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_DEFAULT",
+                                            "raw_expr": {
+                                                "FuncCall": {
+                                                    "funcname": [
+                                                        {
+                                                            "String": {
+                                                                "sval": "now"
+                                                            }
+                                                        }
+                                                    ],
+                                                    "funcformat": "COERCE_EXPLICIT_CALL",
+                                                    "location": 2066
+                                                }
+                                            },
+                                            "location": 2058
+                                        }
+                                    }
+                                ],
+                                "location": 2026
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "last_accessed_at",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "timestamptz"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 2153
+                                },
+                                "is_local": true,
+                                "constraints": [
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_NOTNULL",
+                                            "location": 2165
+                                        }
+                                    },
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_DEFAULT",
+                                            "raw_expr": {
+                                                "FuncCall": {
+                                                    "funcname": [
+                                                        {
+                                                            "String": {
+                                                                "sval": "now"
+                                                            }
+                                                        }
+                                                    ],
+                                                    "funcformat": "COERCE_EXPLICIT_CALL",
+                                                    "location": 2182
+                                                }
+                                            },
+                                            "location": 2174
+                                        }
+                                    }
+                                ],
+                                "location": 2136
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "user_id",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "uuid"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 2245
+                                },
+                                "is_local": true,
+                                "constraints": [
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_NOTNULL",
+                                            "location": 2250
+                                        }
+                                    }
+                                ],
+                                "location": 2237
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "account_id",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "uuid"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 2322
+                                },
+                                "is_local": true,
+                                "constraints": [
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_NOTNULL",
+                                            "location": 2327
+                                        }
+                                    }
+                                ],
+                                "location": 2311
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "role",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "public"
+                                            }
+                                        },
+                                        {
+                                            "String": {
+                                                "sval": "user_role"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 2394
+                                },
+                                "is_local": true,
+                                "constraints": [
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_NOTNULL",
+                                            "location": 2411
+                                        }
+                                    },
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_DEFAULT",
+                                            "raw_expr": {
+                                                "A_Const": {
+                                                    "sval": {
+                                                        "sval": "default"
+                                                    },
+                                                    "location": 2428
+                                                }
+                                            },
+                                            "location": 2420
+                                        }
+                                    }
+                                ],
+                                "location": 2389
+                            }
+                        },
+                        {
+                            "Constraint": {
+                                "contype": "CONSTR_PRIMARY",
+                                "conname": "account_membership_pkey",
+                                "keys": [
+                                    {
+                                        "String": {
+                                            "sval": "id"
+                                        }
+                                    }
+                                ],
+                                "location": 2444
+                            }
+                        },
+                        {
+                            "Constraint": {
+                                "contype": "CONSTR_FOREIGN",
+                                "conname": "account_membership_user_fk",
+                                "initially_valid": true,
+                                "pktable": {
+                                    "schemaname": "public",
+                                    "relname": "user",
+                                    "inh": true,
+                                    "relpersistence": "p",
+                                    "location": 2572
+                                },
+                                "fk_attrs": [
+                                    {
+                                        "String": {
+                                            "sval": "user_id"
+                                        }
+                                    }
+                                ],
+                                "pk_attrs": [
+                                    {
+                                        "String": {
+                                            "sval": "id"
+                                        }
+                                    }
+                                ],
+                                "fk_matchtype": "s",
+                                "fk_upd_action": "a",
+                                "fk_del_action": "c",
+                                "location": 2501
+                            }
+                        },
+                        {
+                            "Constraint": {
+                                "contype": "CONSTR_FOREIGN",
+                                "conname": "account_membership_account_fk",
+                                "initially_valid": true,
+                                "pktable": {
+                                    "schemaname": "public",
+                                    "relname": "account",
+                                    "inh": true,
+                                    "relpersistence": "p",
+                                    "location": 2690
+                                },
+                                "fk_attrs": [
+                                    {
+                                        "String": {
+                                            "sval": "account_id"
+                                        }
+                                    }
+                                ],
+                                "pk_attrs": [
+                                    {
+                                        "String": {
+                                            "sval": "id"
+                                        }
+                                    }
+                                ],
+                                "fk_matchtype": "s",
+                                "fk_upd_action": "a",
+                                "fk_del_action": "c",
+                                "location": 2613
+                            }
+                        },
+                        {
+                            "Constraint": {
+                                "contype": "CONSTR_UNIQUE",
+                                "conname": "account_membership_user_account_unique",
+                                "keys": [
+                                    {
+                                        "String": {
+                                            "sval": "user_id"
+                                        }
+                                    },
+                                    {
+                                        "String": {
+                                            "sval": "account_id"
+                                        }
+                                    }
+                                ],
+                                "location": 2732
+                            }
+                        }
+                    ],
+                    "oncommit": "ONCOMMIT_NOOP"
+                }
+            },
+            "stmt_location": 1797,
+            "stmt_len": 1015
+        },
+        {
+            "stmt": {
+                "CreateStmt": {
+                    "relation": {
+                        "schemaname": "public",
+                        "relname": "task",
+                        "inh": true,
+                        "relpersistence": "p",
+                        "location": 2862
+                    },
+                    "tableElts": [
+                        {
+                            "ColumnDef": {
+                                "colname": "id",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "uuid"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 2912
+                                },
+                                "is_local": true,
+                                "constraints": [
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_NOTNULL",
+                                            "location": 2917
+                                        }
+                                    },
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_DEFAULT",
+                                            "raw_expr": {
+                                                "FuncCall": {
+                                                    "funcname": [
+                                                        {
+                                                            "String": {
+                                                                "sval": "gen_random_uuid"
+                                                            }
+                                                        }
+                                                    ],
+                                                    "funcformat": "COERCE_EXPLICIT_CALL",
+                                                    "location": 2934
+                                                }
+                                            },
+                                            "location": 2926
+                                        }
+                                    }
+                                ],
+                                "location": 2909
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "created_at",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "timestamptz"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 3011
+                                },
+                                "is_local": true,
+                                "constraints": [
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_NOTNULL",
+                                            "location": 3023
+                                        }
+                                    },
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_DEFAULT",
+                                            "raw_expr": {
+                                                "FuncCall": {
+                                                    "funcname": [
+                                                        {
+                                                            "String": {
+                                                                "sval": "now"
+                                                            }
+                                                        }
+                                                    ],
+                                                    "funcformat": "COERCE_EXPLICIT_CALL",
+                                                    "location": 3040
+                                                }
+                                            },
+                                            "location": 3032
+                                        }
+                                    }
+                                ],
+                                "location": 3000
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "updated_at",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "timestamptz"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 3110
+                                },
+                                "is_local": true,
+                                "constraints": [
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_NOTNULL",
+                                            "location": 3122
+                                        }
+                                    },
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_DEFAULT",
+                                            "raw_expr": {
+                                                "FuncCall": {
+                                                    "funcname": [
+                                                        {
+                                                            "String": {
+                                                                "sval": "now"
+                                                            }
+                                                        }
+                                                    ],
+                                                    "funcformat": "COERCE_EXPLICIT_CALL",
+                                                    "location": 3139
+                                                }
+                                            },
+                                            "location": 3131
+                                        }
+                                    }
+                                ],
+                                "location": 3099
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "account_id",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "uuid"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 3202
+                                },
+                                "is_local": true,
+                                "constraints": [
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_NOTNULL",
+                                            "location": 3207
+                                        }
+                                    }
+                                ],
+                                "location": 3191
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "created_by_user_id",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "uuid"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 3278
+                                },
+                                "is_local": true,
+                                "location": 3259
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "updated_by_user_id",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "uuid"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 3350
+                                },
+                                "is_local": true,
+                                "location": 3331
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "title",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "text"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 3396
+                                },
+                                "is_local": true,
+                                "constraints": [
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_NOTNULL",
+                                            "location": 3401
+                                        }
+                                    }
+                                ],
+                                "location": 3390
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "status",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "public"
+                                            }
+                                        },
+                                        {
+                                            "String": {
+                                                "sval": "task_status"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 3457
+                                },
+                                "is_local": true,
+                                "constraints": [
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_NOTNULL",
+                                            "location": 3476
+                                        }
+                                    },
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_DEFAULT",
+                                            "raw_expr": {
+                                                "A_Const": {
+                                                    "sval": {
+                                                        "sval": "active"
+                                                    },
+                                                    "location": 3493
+                                                }
+                                            },
+                                            "location": 3485
+                                        }
+                                    }
+                                ],
+                                "location": 3450
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "description_markdown",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "text"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 3581
+                                },
+                                "is_local": true,
+                                "constraints": [
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_NOTNULL",
+                                            "location": 3586
+                                        }
+                                    },
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_DEFAULT",
+                                            "raw_expr": {
+                                                "A_Const": {
+                                                    "sval": {
+                                                        "sval": ""
+                                                    },
+                                                    "location": 3603
+                                                }
+                                            },
+                                            "location": 3595
+                                        }
+                                    }
+                                ],
+                                "location": 3560
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "completed_at",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "timestamptz"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 3680
+                                },
+                                "is_local": true,
+                                "location": 3667
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "archived_at",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "timestamptz"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 3754
+                                },
+                                "is_local": true,
+                                "location": 3742
+                            }
+                        },
+                        {
+                            "Constraint": {
+                                "contype": "CONSTR_PRIMARY",
+                                "conname": "task_pkey",
+                                "keys": [
+                                    {
+                                        "String": {
+                                            "sval": "id"
+                                        }
+                                    }
+                                ],
+                                "location": 3772
+                            }
+                        },
+                        {
+                            "Constraint": {
+                                "contype": "CONSTR_FOREIGN",
+                                "conname": "task_account_fk",
+                                "initially_valid": true,
+                                "pktable": {
+                                    "schemaname": "public",
+                                    "relname": "account",
+                                    "inh": true,
+                                    "relpersistence": "p",
+                                    "location": 3878
+                                },
+                                "fk_attrs": [
+                                    {
+                                        "String": {
+                                            "sval": "account_id"
+                                        }
+                                    }
+                                ],
+                                "pk_attrs": [
+                                    {
+                                        "String": {
+                                            "sval": "id"
+                                        }
+                                    }
+                                ],
+                                "fk_matchtype": "s",
+                                "fk_upd_action": "a",
+                                "fk_del_action": "c",
+                                "location": 3815
+                            }
+                        },
+                        {
+                            "Constraint": {
+                                "contype": "CONSTR_FOREIGN",
+                                "conname": "task_created_by_user_fk",
+                                "initially_valid": true,
+                                "pktable": {
+                                    "schemaname": "public",
+                                    "relname": "user",
+                                    "inh": true,
+                                    "relpersistence": "p",
+                                    "location": 3999
+                                },
+                                "fk_attrs": [
+                                    {
+                                        "String": {
+                                            "sval": "created_by_user_id"
+                                        }
+                                    }
+                                ],
+                                "pk_attrs": [
+                                    {
+                                        "String": {
+                                            "sval": "id"
+                                        }
+                                    }
+                                ],
+                                "fk_matchtype": "s",
+                                "fk_upd_action": "a",
+                                "fk_del_action": "n",
+                                "location": 3920
+                            }
+                        },
+                        {
+                            "Constraint": {
+                                "contype": "CONSTR_FOREIGN",
+                                "conname": "task_updated_by_user_fk",
+                                "initially_valid": true,
+                                "pktable": {
+                                    "schemaname": "public",
+                                    "relname": "user",
+                                    "inh": true,
+                                    "relpersistence": "p",
+                                    "location": 4120
+                                },
+                                "fk_attrs": [
+                                    {
+                                        "String": {
+                                            "sval": "updated_by_user_id"
+                                        }
+                                    }
+                                ],
+                                "pk_attrs": [
+                                    {
+                                        "String": {
+                                            "sval": "id"
+                                        }
+                                    }
+                                ],
+                                "fk_matchtype": "s",
+                                "fk_upd_action": "a",
+                                "fk_del_action": "n",
+                                "location": 4041
+                            }
+                        }
+                    ],
+                    "oncommit": "ONCOMMIT_NOOP"
+                }
+            },
+            "stmt_location": 2813,
+            "stmt_len": 1345
+        },
+        {
+            "stmt": {
+                "CreateStmt": {
+                    "relation": {
+                        "schemaname": "public",
+                        "relname": "account_invite",
+                        "inh": true,
+                        "relpersistence": "p",
+                        "location": 4226
+                    },
+                    "tableElts": [
+                        {
+                            "ColumnDef": {
+                                "colname": "id",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "uuid"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 4296
+                                },
+                                "is_local": true,
+                                "constraints": [
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_NOTNULL",
+                                            "location": 4301
+                                        }
+                                    },
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_DEFAULT",
+                                            "raw_expr": {
+                                                "FuncCall": {
+                                                    "funcname": [
+                                                        {
+                                                            "String": {
+                                                                "sval": "gen_random_uuid"
+                                                            }
+                                                        }
+                                                    ],
+                                                    "funcformat": "COERCE_EXPLICIT_CALL",
+                                                    "location": 4318
+                                                }
+                                            },
+                                            "location": 4310
+                                        }
+                                    }
+                                ],
+                                "location": 4293
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "created_at",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "timestamptz"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 4397
+                                },
+                                "is_local": true,
+                                "constraints": [
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_NOTNULL",
+                                            "location": 4409
+                                        }
+                                    },
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_DEFAULT",
+                                            "raw_expr": {
+                                                "FuncCall": {
+                                                    "funcname": [
+                                                        {
+                                                            "String": {
+                                                                "sval": "now"
+                                                            }
+                                                        }
+                                                    ],
+                                                    "funcformat": "COERCE_EXPLICIT_CALL",
+                                                    "location": 4426
+                                                }
+                                            },
+                                            "location": 4418
+                                        }
+                                    }
+                                ],
+                                "location": 4386
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "account_id",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "uuid"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 4497
+                                },
+                                "is_local": true,
+                                "constraints": [
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_NOTNULL",
+                                            "location": 4502
+                                        }
+                                    }
+                                ],
+                                "location": 4486
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "invited_by_user_id",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "uuid"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 4580
+                                },
+                                "is_local": true,
+                                "location": 4561
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "code",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "text"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 4649
+                                },
+                                "is_local": true,
+                                "constraints": [
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_NOTNULL",
+                                            "location": 4654
+                                        }
+                                    }
+                                ],
+                                "location": 4644
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "email",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "text"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 4725
+                                },
+                                "is_local": true,
+                                "location": 4719
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "role",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "public"
+                                            }
+                                        },
+                                        {
+                                            "String": {
+                                                "sval": "user_role"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 4791
+                                },
+                                "is_local": true,
+                                "constraints": [
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_NOTNULL",
+                                            "location": 4808
+                                        }
+                                    },
+                                    {
+                                        "Constraint": {
+                                            "contype": "CONSTR_DEFAULT",
+                                            "raw_expr": {
+                                                "A_Const": {
+                                                    "sval": {
+                                                        "sval": "default"
+                                                    },
+                                                    "location": 4825
+                                                }
+                                            },
+                                            "location": 4817
+                                        }
+                                    }
+                                ],
+                                "location": 4786
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "expires_at",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "timestamptz"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 4892
+                                },
+                                "is_local": true,
+                                "location": 4881
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "accepted_at",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "timestamptz"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 4958
+                                },
+                                "is_local": true,
+                                "location": 4946
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "accepted_by_user_id",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "uuid"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 5036
+                                },
+                                "is_local": true,
+                                "location": 5016
+                            }
+                        },
+                        {
+                            "ColumnDef": {
+                                "colname": "revoked_at",
+                                "typeName": {
+                                    "names": [
+                                        {
+                                            "String": {
+                                                "sval": "timestamptz"
+                                            }
+                                        }
+                                    ],
+                                    "typemod": -1,
+                                    "location": 5106
+                                },
+                                "is_local": true,
+                                "location": 5095
+                            }
+                        },
+                        {
+                            "Constraint": {
+                                "contype": "CONSTR_PRIMARY",
+                                "conname": "account_invite_pkey",
+                                "keys": [
+                                    {
+                                        "String": {
+                                            "sval": "id"
+                                        }
+                                    }
+                                ],
+                                "location": 5124
+                            }
+                        },
+                        {
+                            "Constraint": {
+                                "contype": "CONSTR_FOREIGN",
+                                "conname": "account_invite_account_fk",
+                                "initially_valid": true,
+                                "pktable": {
+                                    "schemaname": "public",
+                                    "relname": "account",
+                                    "inh": true,
+                                    "relpersistence": "p",
+                                    "location": 5250
+                                },
+                                "fk_attrs": [
+                                    {
+                                        "String": {
+                                            "sval": "account_id"
+                                        }
+                                    }
+                                ],
+                                "pk_attrs": [
+                                    {
+                                        "String": {
+                                            "sval": "id"
+                                        }
+                                    }
+                                ],
+                                "fk_matchtype": "s",
+                                "fk_upd_action": "a",
+                                "fk_del_action": "c",
+                                "location": 5177
+                            }
+                        },
+                        {
+                            "Constraint": {
+                                "contype": "CONSTR_FOREIGN",
+                                "conname": "account_invite_invited_by_user_fk",
+                                "initially_valid": true,
+                                "pktable": {
+                                    "schemaname": "public",
+                                    "relname": "user",
+                                    "inh": true,
+                                    "relpersistence": "p",
+                                    "location": 5381
+                                },
+                                "fk_attrs": [
+                                    {
+                                        "String": {
+                                            "sval": "invited_by_user_id"
+                                        }
+                                    }
+                                ],
+                                "pk_attrs": [
+                                    {
+                                        "String": {
+                                            "sval": "id"
+                                        }
+                                    }
+                                ],
+                                "fk_matchtype": "s",
+                                "fk_upd_action": "a",
+                                "fk_del_action": "n",
+                                "location": 5292
+                            }
+                        },
+                        {
+                            "Constraint": {
+                                "contype": "CONSTR_FOREIGN",
+                                "conname": "account_invite_accepted_by_user_fk",
+                                "initially_valid": true,
+                                "pktable": {
+                                    "schemaname": "public",
+                                    "relname": "user",
+                                    "inh": true,
+                                    "relpersistence": "p",
+                                    "location": 5514
+                                },
+                                "fk_attrs": [
+                                    {
+                                        "String": {
+                                            "sval": "accepted_by_user_id"
+                                        }
+                                    }
+                                ],
+                                "pk_attrs": [
+                                    {
+                                        "String": {
+                                            "sval": "id"
+                                        }
+                                    }
+                                ],
+                                "fk_matchtype": "s",
+                                "fk_upd_action": "a",
+                                "fk_del_action": "n",
+                                "location": 5423
+                            }
+                        },
+                        {
+                            "Constraint": {
+                                "contype": "CONSTR_UNIQUE",
+                                "conname": "account_invite_code_unique",
+                                "keys": [
+                                    {
+                                        "String": {
+                                            "sval": "code"
+                                        }
+                                    }
+                                ],
+                                "location": 5556
+                            }
+                        }
+                    ],
+                    "oncommit": "ONCOMMIT_NOOP"
+                }
+            },
+            "stmt_location": 4159,
+            "stmt_len": 1450
+        },
+        {
+            "stmt": {
+                "IndexStmt": {
+                    "idxname": "account_membership_user_idx",
+                    "relation": {
+                        "schemaname": "public",
+                        "relname": "account_membership",
+                        "inh": true,
+                        "relpersistence": "p",
+                        "location": 5707
+                    },
+                    "accessMethod": "btree",
+                    "indexParams": [
+                        {
+                            "IndexElem": {
+                                "name": "user_id",
+                                "ordering": "SORTBY_DEFAULT",
+                                "nulls_ordering": "SORTBY_NULLS_DEFAULT"
+                            }
+                        }
+                    ]
+                }
+            },
+            "stmt_location": 5610,
+            "stmt_len": 132
+        },
+        {
+            "stmt": {
+                "IndexStmt": {
+                    "idxname": "account_membership_account_idx",
+                    "relation": {
+                        "schemaname": "public",
+                        "relname": "account_membership",
+                        "inh": true,
+                        "relpersistence": "p",
+                        "location": 5834
+                    },
+                    "accessMethod": "btree",
+                    "indexParams": [
+                        {
+                            "IndexElem": {
+                                "name": "account_id",
+                                "ordering": "SORTBY_DEFAULT",
+                                "nulls_ordering": "SORTBY_NULLS_DEFAULT"
+                            }
+                        }
+                    ]
+                }
+            },
+            "stmt_location": 5743,
+            "stmt_len": 129
+        },
+        {
+            "stmt": {
+                "IndexStmt": {
+                    "idxname": "task_account_idx",
+                    "relation": {
+                        "schemaname": "public",
+                        "relname": "task",
+                        "inh": true,
+                        "relpersistence": "p",
+                        "location": 5944
+                    },
+                    "accessMethod": "btree",
+                    "indexParams": [
+                        {
+                            "IndexElem": {
+                                "name": "account_id",
+                                "ordering": "SORTBY_DEFAULT",
+                                "nulls_ordering": "SORTBY_NULLS_DEFAULT"
+                            }
+                        }
+                    ]
+                }
+            },
+            "stmt_location": 5873,
+            "stmt_len": 95
+        },
+        {
+            "stmt": {
+                "IndexStmt": {
+                    "idxname": "task_status_idx",
+                    "relation": {
+                        "schemaname": "public",
+                        "relname": "task",
+                        "inh": true,
+                        "relpersistence": "p",
+                        "location": 6041
+                    },
+                    "accessMethod": "btree",
+                    "indexParams": [
+                        {
+                            "IndexElem": {
+                                "name": "status",
+                                "ordering": "SORTBY_DEFAULT",
+                                "nulls_ordering": "SORTBY_NULLS_DEFAULT"
+                            }
+                        }
+                    ]
+                }
+            },
+            "stmt_location": 5969,
+            "stmt_len": 92
+        },
+        {
+            "stmt": {
+                "IndexStmt": {
+                    "idxname": "task_created_by_user_idx",
+                    "relation": {
+                        "schemaname": "public",
+                        "relname": "task",
+                        "inh": true,
+                        "relpersistence": "p",
+                        "location": 6128
+                    },
+                    "accessMethod": "btree",
+                    "indexParams": [
+                        {
+                            "IndexElem": {
+                                "name": "created_by_user_id",
+                                "ordering": "SORTBY_DEFAULT",
+                                "nulls_ordering": "SORTBY_NULLS_DEFAULT"
+                            }
+                        }
+                    ]
+                }
+            },
+            "stmt_location": 6062,
+            "stmt_len": 98
+        },
+        {
+            "stmt": {
+                "IndexStmt": {
+                    "idxname": "task_updated_by_user_idx",
+                    "relation": {
+                        "schemaname": "public",
+                        "relname": "task",
+                        "inh": true,
+                        "relpersistence": "p",
+                        "location": 6227
+                    },
+                    "accessMethod": "btree",
+                    "indexParams": [
+                        {
+                            "IndexElem": {
+                                "name": "updated_by_user_id",
+                                "ordering": "SORTBY_DEFAULT",
+                                "nulls_ordering": "SORTBY_NULLS_DEFAULT"
+                            }
+                        }
+                    ]
+                }
+            },
+            "stmt_location": 6161,
+            "stmt_len": 98
+        },
+        {
+            "stmt": {
+                "IndexStmt": {
+                    "idxname": "account_invite_account_idx",
+                    "relation": {
+                        "schemaname": "public",
+                        "relname": "account_invite",
+                        "inh": true,
+                        "relpersistence": "p",
+                        "location": 6333
+                    },
+                    "accessMethod": "btree",
+                    "indexParams": [
+                        {
+                            "IndexElem": {
+                                "name": "account_id",
+                                "ordering": "SORTBY_DEFAULT",
+                                "nulls_ordering": "SORTBY_NULLS_DEFAULT"
+                            }
+                        }
+                    ]
+                }
+            },
+            "stmt_location": 6260,
+            "stmt_len": 107
+        },
+        {
+            "stmt": {
+                "IndexStmt": {
+                    "idxname": "user_email_idx",
+                    "relation": {
+                        "schemaname": "public",
+                        "relname": "user",
+                        "inh": true,
+                        "relpersistence": "p",
+                        "location": 6427
+                    },
+                    "accessMethod": "btree",
+                    "indexParams": [
+                        {
+                            "IndexElem": {
+                                "name": "email",
+                                "ordering": "SORTBY_DEFAULT",
+                                "nulls_ordering": "SORTBY_NULLS_DEFAULT"
+                            }
+                        }
+                    ]
+                }
+            },
+            "stmt_location": 6368,
+            "stmt_len": 80
+        }
+    ]
+}

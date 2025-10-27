@@ -1,0 +1,21 @@
+export const tableMap={
+    "toName": {
+        "user": "User",
+        "account": "Account",
+        "account_membership": "AccountMembership",
+        "task": "Task",
+        "account_invite": "AccountInvite"
+    },
+    "toTable": {
+        "User": "user",
+        "User_insert": "user",
+        "Account": "account",
+        "Account_insert": "account",
+        "AccountMembership": "account_membership",
+        "AccountMembership_insert": "account_membership",
+        "Task": "task",
+        "Task_insert": "task",
+        "AccountInvite": "account_invite",
+        "AccountInvite_insert": "account_invite"
+    }
+}

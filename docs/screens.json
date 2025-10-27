@@ -1,0 +1,47 @@
+[
+    {
+        "name": "Landing page",
+        "route": "index",
+        "description": "Marketing home with a full-screen hero carousel highlighting Task Bee’s top value propositions."
+    },
+    {
+        "name": "Register",
+        "route": "register",
+        "description": "Register a new user and create an organization; shows a notice if already signed in."
+    },
+    {
+        "name": "Sign-in",
+        "route": "sign-in",
+        "description": "Sign in to an existing account; shows a notice if already signed in."
+    },
+    {
+        "name": "Dashboard",
+        "route": "dashboard",
+        "description": "Manage company tasks: add, remove, complete, archive, and download as markdown."
+    },
+    {
+        "name": "Task Detail",
+        "route": "task/[taskId]",
+        "description": "View and edit a single task in markdown, toggle preview, complete, archive, and download."
+    },
+    {
+        "name": "Account",
+        "route": "account",
+        "description": "View account info (name, logo, id), manage users, admins can edit info and generate invite links."
+    },
+    {
+        "name": "Accept Account Invite",
+        "route": "accept-account-invite/[inviteCode]",
+        "description": "Accept or decline an account invite; prompts sign-in if the user is not authenticated."
+    },
+    {
+        "name": "Profile",
+        "route": "profile",
+        "description": "Private user profile: view info, edit (except email), and switch between joined accounts."
+    },
+    {
+        "name": "Public Profile",
+        "route": "profile/[userId]",
+        "description": "Public-facing profile within the account; admins can view/change the user’s role (not their own)."
+    }
+]

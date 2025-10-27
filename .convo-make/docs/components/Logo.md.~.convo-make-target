@@ -1,0 +1,2011 @@
+> define
+__makeRoot="../../.."
+__makeFile="make.convo"
+__makeOut="docs/components/Logo.md"
+__model="gpt-5"
+
+> system
+You are generating content that will be directly written to "docs/components/Logo.md".
+DO NOT include a preamble or postamble.
+
+Always respond with the full content for "docs/components/Logo.md", even if you are making an
+small or incremental update.
+
+> appendUser
+<app-description>
+## Task Bee
+
+A minimal, light-hearted task manager for companies. Task Bee helps teams capture, organize, complete, and archive tasks, with rich markdown details and simple sharing.
+
+### Overview
+Task Bee enables signed-in users to manage their organization’s tasks in a multi-tenant setup. Tasks can include detailed markdown content with edit and preview modes, can be marked complete, archived, and exported as a markdown file. Account admins can manage account details and user roles, while all signed-in users gain access to dashboards and task detail pages.
+
+## Features
+
+- Task management
+  - Add tasks
+  - Remove tasks
+  - Mark tasks as completed
+  - Archive tasks
+  - Download tasks as a markdown file
+  - Store detailed task information in markdown format
+    - Includes both edit and preview modes
+  - Share a link to a task detail page
+
+- Account and access
+  - Multi-tenant accounts with role-based visibility and permissions
+  - Invite users to an account via an invite link
+  - View account info, logo, and ID
+  - Admins can edit account info and manage member roles
+  - View user profiles (self and public view)
+  - Switch between accounts
+
+## User Roles
+
+- guest
+  - A user not signed in
+- default
+  - Default role for a signed-in user belonging to an account
+- manager
+  - An account manager with elevated capabilities
+- admin
+  - A super admin that can manage any account and its users
+
+## Screens
+
+### Landing page
+- Route: /
+- Seen by roles: all
+- Description: A marketing page for Task Bee with a large, eye-catching full-screen hero carousel highlighting the app’s top value propositions.
+
+### Register
+- Route: /register
+- Seen by roles: all
+- Description: Register a new user and create an organizational account. If already signed in, a message indicates the user is already registered.
+- Inputs:
+  - name
+  - email
+  - Organization name
+  - password
+
+### Sign-in
+- Route: /sign-in
+- Seen by roles: all
+- Description: Sign in as an existing user. If already signed in, a message indicates the user is already signed in.
+- Inputs:
+  - email
+  - password
+
+### Dashboard
+- Route: /dashboard
+- Seen by roles: all signed-in users
+- Description: The central place for managing tasks for the current company/account.
+- Capabilities:
+  - Add, remove tasks
+  - Mark tasks as completed
+  - Archive tasks
+  - Download tasks as markdown
+
+### Task Detail
+- Route: /task/[task-id]
+- Seen by roles: all signed-in users
+- Description: A dedicated page to manage and view a single task.
+- Capabilities:
+  - View and edit task details in markdown
+    - Toggle between edit and preview modes
+  - Mark as completed
+  - Archive task
+  - Download this task as markdown
+  - Share a link to this task
+
+### Account
+- Route: /account
+- Seen by roles: all signed-in users
+- Description: Shows account information and membership.
+- Details:
+  - Displays:
+    - name
+    - logo
+    - id (muted)
+  - Admin-only:
+    - Edit account info
+    - Invite users via invite link:
+      - https://${location.host}/accept-account-invite/${inviteCode}
+  - Users section:
+    - Grid of user cards (name + profile picture), linking to each user’s public profile
+  - Link to create a new account
+
+### Accept Account Invite
+- Route: /accept-account-invite/[invite-code]
+- Seen by roles: all
+- Description: Accept or decline an invite to join an account. If not signed in, users are prompted to sign in first.
+
+### Profile
+- Route: /profile
+- Seen by roles: all signed-in users
+- Description: The private profile page for the current user.
+- Capabilities:
+  - View personal info
+  - View all accounts the user belongs to, with option to switch accounts
+  - Edit profile fields, except email address (not editable)
+
+### Public Profile
+- Route: /profile/[user-id]
+- Seen by roles: all signed-in users
+- Description: Public-facing profile page as seen by other users within the account context.
+- Admin functionality:
+  - Admins can see the user’s role
+  - Admins can change the user’s role
+  - Admins cannot change their own role
+
+## Task Model and Behaviors
+
+- A task contains:
+  - Title and status (active, completed, archived)
+  - Detailed description in markdown
+  - Metadata related to its account
+- Actions:
+  - Edit details in markdown with a live preview mode
+  - Mark complete for workflow visibility
+  - Archive to keep the dashboard focused while retaining historical context
+  - Export/download as a markdown file for offline sharing or documentation
+  - Share link to the task detail page with teammates
+
+## Styling
+
+- Framework: Tailwind CSS
+- Look and feel:
+  - Minimalistic
+  - Light-hearted
+  - Good use of negative space
+  - Gradient backgrounds
+  - Rounded corners and surfaces
+- Custom color palette:
+  - CSS variables:
+    - --light-blue: #a8d5e2ff
+    - --orange-web: #f9a620ff (Brand color)
+    - --mustard: #ffd449ff
+    - --forest-green: #548c2fff (Secondary)
+    - --pakistan-green: #104911ff
+- Brand usage rules:
+  - Use the brand color (#f9a620ff) sparingly
+  - Reserve the brand color primarily for the most important CTAs or as a subtle thin border for highlights when not a main CTA
+
+## Summary
+
+Task Bee streamlines task tracking for companies with a clear, role-aware experience. Users can collaborate on tasks, enrich them with markdown detail, and maintain clean dashboards by completing and archiving items. Admins manage their accounts and memberships, while a thoughtful, minimal visual style ensures focus and clarity.
+</app-description>
+
+> appendUser
+<all-screens>
+[
+    {
+        "name": "Landing page",
+        "route": "index",
+        "description": "Marketing home with a full-screen hero carousel highlighting Task Bee’s top value propositions."
+    },
+    {
+        "name": "Register",
+        "route": "register",
+        "description": "Register a new user and create an organization; shows a notice if already signed in."
+    },
+    {
+        "name": "Sign-in",
+        "route": "sign-in",
+        "description": "Sign in to an existing account; shows a notice if already signed in."
+    },
+    {
+        "name": "Dashboard",
+        "route": "dashboard",
+        "description": "Manage company tasks: add, remove, complete, archive, and download as markdown."
+    },
+    {
+        "name": "Task Detail",
+        "route": "task/[taskId]",
+        "description": "View and edit a single task in markdown, toggle preview, complete, archive, and download."
+    },
+    {
+        "name": "Account",
+        "route": "account",
+        "description": "View account info (name, logo, id), manage users, admins can edit info and generate invite links."
+    },
+    {
+        "name": "Accept Account Invite",
+        "route": "accept-account-invite/[inviteCode]",
+        "description": "Accept or decline an account invite; prompts sign-in if the user is not authenticated."
+    },
+    {
+        "name": "Profile",
+        "route": "profile",
+        "description": "Private user profile: view info, edit (except email), and switch between joined accounts."
+    },
+    {
+        "name": "Public Profile",
+        "route": "profile/[userId]",
+        "description": "Public-facing profile within the account; admins can view/change the user’s role (not their own)."
+    }
+]
+</all-screens>
+
+> appendUser
+<coding-rules>
+## Tech Stack
+- ReactJS
+- NextJS - pages directory and static site generation
+- Tailwinds v4
+- lucide-react - icons
+- Supabase
+
+## Layout
+It is preferred to use stacking layouts using flex-box columns to avoid running out of horizontal
+room. Avoid long names in buttons and prefer to use icons for buttons.
+
+If buttons display text DO NOT give the button a static width.
+
+## Static site generation
+The frontend of the app uses static site generation so no server side rendering should be used. All
+pages are stored in the pages directory and the NextJS app router is NOT used.
+
+## Exports
+Always use named exports unless explicitly told otherwise or required such as when creating NextJS
+pages.
+
+## Multi-tenet Database
+The database is a multi-tenet database where the `account` table represents each tenet. All entities
+that belong to or fall under an account should have an `account_id` property directly linking the
+entity to an account. Entities that can belong to multiple accounts should use a join table to
+link to an account. 
+
+The `user` table is linked to the `account` table through the `account_membership` table.
+
+
+## Required Entities
+The following entities must be represented in the database schema. Additional properties or values
+can be added to the entities
+
+### User
+Represents a signed-in user
+
+Table name: user
+Required Properties:
+- id: uuid
+- created_at: timestamptz
+- name: text
+- email: text
+- profile_image_path?: text - path of profile picture in the accounts bucket
+- hero_image_path?: text
+
+### Account
+Represents a company or organization
+
+Table name: account
+Required Properties:
+- id: uuid
+- created_at: timestamptz
+- name: text
+- logo_image_path?: text - path of profile picture in the accounts bucket
+- hero_image_path?: text
+
+### AccountMembership
+Links a User to an Account
+
+Table name: account_membership
+Required Properties:
+- id: uuid
+- created_at: timestamptz
+- last_accessed_at: timestamptz
+- user_id: uuid
+- account_id: uuid
+- role: UserRole
+
+### UserRole
+An enumeration of different role types.
+- admin: The admin of an account
+- guest: A guest in an account
+Enum name: user_role
+
+
+
+## Schema Utility Types
+The `@/lib/schema` import contains types and objects that map to the database schema.
+
+`@/lib/schema` exports the following:
+- typeDefs: An object of type `Record<string,TypeDef>` containing key value pairs for each table in the database.
+- {type_name}: An interface that represents the structure of a value in a table.
+- {type_name}_insert: An interface that represents the structure of a value to be inserted in the a table.
+- {type_name}Schema: A Zod schema that represents the structure of a value in a table.
+- {type_name}_insertSchema: A Zod schema that represents the structure of a value to be inserted in the a table.
+- TypeDef: An interface that represents a type
+- PropDef: An interface the represents a property of a type
+- TypeMapping: An interface that maps type names to various programming languages.
+
+
+Example:
+``` ts
+import { User, User_insert, UserSchema, User_insertSchema, typeDefs } from "@/lib/schema";
+
+let user:User;
+UserSchema.parse(user);
+
+let newUser:User_insert;
+User_insertSchema.parse(newUser);
+
+const userPrimaryKey=typeDefs.primaryKey;
+```
+
+Schema Utility Interfaces:
+``` ts
+export interface TypeMapping
+{
+    name:string;
+    ts?:string;
+    zod?:string;
+    convo?:string;
+    sql?:string;
+}
+
+export interface PropDef
+{
+    name:string;
+    type:TypeMapping;
+    primary?:boolean;
+    description?:string;
+    sqlDef?:string;
+    optional?:boolean;
+    hasDefault?:boolean;
+    isArray?:boolean;
+    arrayDimensions?:number;
+}
+
+export interface TypeDef<
+    TValue extends Record<string,any>=Record<string,any>,
+    TInsert extends Record<string,any>=Record<string,any>
+\>{
+
+
+    name:string;
+    description?:string;
+    type:'type'|'enum';
+    primaryKey:(keyof TValue) & (keyof TInsert);
+    sqlTable?:string;
+    sqlSchema?:string;
+    zodSchema?:ZodType;
+    zodInsertSchema?:ZodType;
+    props:PropDef[];
+}
+```
+
+## Supabase client
+The `supClient` function imported from "@/lib/supabase" can be used to access an instance of a
+Supabase client.
+
+Supabase Client Example:
+``` ts
+import { supClient } from "@/lib/supabase";
+
+async function signInExampleAsync(){
+    const signInResult=await supClient().auth.signInWithPassword({email,password});
+}
+```
+
+## File Storage
+File should be stored using supabase storage using the `accounts` bucket and use the following pattern for paths.
+
+File path pattern: `{account_id}/users/{user_id}/{REST_OF_PATH}`
+
+Example file path for:
+- account_id: 809f36d5-8549-417e-b89c-7f1cb129b4dc
+- user_id: fe691ceb-ba31-421e-9a51-7fb1207965e8
+- file_name: example-book.pdf
+
+Upload Path: `809f36d5-8549-417e-b89c-7f1cb129b4dc/users/fe691ceb-ba31-421e-9a51-7fb1207965e8/example-book.pdf`
+
+### Storing file path in Database
+When storing file paths in the database only path of uploaded files should be store, the full URL
+will be generated client side using either the `fileStore()` service imported from `@/lib/fileStore`
+or using the `useFileUrl` hook imported from `@/lib/hooks`.
+
+Example of getting full URL for user profile picture using the `fileStore()` service:
+``` ts
+import { fileStore } from "@/lib/fileStore";
+import { User } from "@/lib/schema";
+
+async function exampleFunction(user:User){
+    if(!user.profile_image_path){
+        return;
+    }
+    const profilePictureUrl=await fileStore().getUrlAsync(user.profile_image_path);
+}
+```
+
+Example of getting full URL for user profile picture using the `useFileUrl` hook:
+``` tsx
+import { useFileUrl } from "@/lib/hooks";
+import { User } from "@/lib/schema";
+
+function ExampleComponent({user}:{user:User}){
+    const profilePictureUrl=useFileUrl(user.profile_image_path);
+    return (
+        <div>
+            {profilePictureUrl===null?
+                'loading'
+            :profilePictureUrl===undefined
+                'No profile picture'
+            :
+                <img src={profilePictureUrl}/>
+            }
+        </div>
+    )
+}
+```
+
+fileStore API:
+``` ts
+/**
+ * Utility class for Supabase storage operations. By default the FileStore class uses the `accounts`
+ * bucket.
+ */
+export class FileStore
+{
+    /**
+     * Gets the full URL for a given path. When needed signed URLs will be created. The result of the
+     * function will be cached and future calls for the same path will returned immediately
+     */
+    public async getUrlAsync(path:string):Promise<string|undefined>;
+
+    /**
+     * Attempts to get the cached URL for the path. If a URL has not been cached for the path
+     * undefined will be returned.
+     */
+    public getCachedUrl(path:string):string|undefined;
+}
+```
+
+useFileUrl API
+``` ts
+/**
+ * Gets the full URL to a given path
+ * Return values:
+ * null: URL info is being loaded
+ * undefined: URL not available
+ * {string}: The full URL of the path
+ * @param path The path to get a URL for. If null or undefined then undefined is returned.
+ */
+export const useFileUrl=(path:string|null|undefined):string|null|undefined=>;
+```
+
+
+
+## CRUD
+Common CRUD operations can be handled using the `store()` service imported from `@/lib/store`
+or the `useStore*()` React hooks imported from `@/lib/hooks`.
+
+Store service example:
+``` ts
+import { store } from "@/lib/store";
+import { typeDefs } from "@/lib/schema";
+
+const user=await store().selectFirstMatchesAsync(typeDefs.User,{email:'example@example.com'})
+```
+
+Use store hook example:
+``` ts
+import { useFirstMatchingStoreItem } from "@/lib/hooks";
+import { typeDefs } from "@/lib/schema";
+
+function ExampleComponent()
+{
+    const user=useFirstMatchingStoreItem(typeDefs.User,{email:'example@example.com'});
+}
+```
+
+### Store service API
+
+``` ts
+
+export class Store
+{
+
+    /**
+     * Gets an item from a table by table name and id. Undefined is returned if no item exists
+     * in the table with the given id.
+     * @param table Name of table to get item from
+     * @param id Id of item to get
+     */
+    public async selectFirstAsync<T extends Record<string,any>>(table:string|TypeDef<T>,id:string):Promise<T|undefined>;
+
+    /**
+     * Selects all matching items from the given table
+     * @param table Name of table to select from
+     * @param match An object with properties to match against
+     * @param options Options used to control selection
+     */
+    public async selectMatchesAsync<T extends Record<string,any>>(table:string|TypeDef<T>,match:Partial<T>,options?:SelectOptions):Promise<Record<string,any>[]>;
+
+    /**
+     * Selects the first matching item form the given table
+     * @param table Table to select from
+     * @param match An object with properties to match against
+     */
+    public async selectFirstMatchesAsync<T extends Record<string,any>>(table:string|TypeDef<T>,match:Partial<T>):Promise<Record<string,any>|undefined>;
+
+    /**
+     * Updates an item value in a table by id.
+     * @param table Name of table to set the item in.
+     * @param id Id of the item to set
+     * @param value Value of the item to set
+     * @returns The value passed to the setItem function
+     */
+    public async insertAsync<T extends Record<string,any>>(table:string|TypeDef<Record<string,any>,T>,value:T):Promise<T>;
+    
+    /**
+     * Updates an item value in a table by id.
+     * @param table Name of table to set the item in.
+     * @param id Id of the item to set
+     * @param value Value of the item to set
+     * @returns The value passed to the setItem function
+     */
+    public async updateAsync<T extends Record<string,any>>(table:string|TypeDef<T>,id:string,value:Partial<T>):Promise<T>;
+    
+    /**
+     * Deletes an item from a table
+     * @param table The name of the table to delete the item from
+     * @param id The Id of the item to delete
+     * @returns The value of the item before being delete or undefined
+     */
+    public async deleteAsync<T extends Record<string,any>>(table:string|TypeDef<T>,id:string):Promise<T|undefined>;
+}
+```
+
+### Store hooks
+The store hooks also have the added benefit of automatically receiving updates when changes are made
+by the `store()` service.
+
+``` ts
+
+export interface UseStoreItemOptions
+{
+    /**
+     * If true useStoreItem will return undefined
+     */
+    disabled?:boolean;
+
+    /**
+     * If true the value will be reset to null when disabled. By default the last loaded
+     * value will be returned when disabled.
+     */
+    resetOnDisabled?:boolean;
+
+    /**
+     * If true the value will be reset to null when table or id changes. By default the last loaded
+     * value will be returned until the new value is loaded.
+     */
+    resetOnChange?:boolean;
+}
+
+export type UseStoreItemsOptions = UseStoreItemOptions & SelectOptions;
+
+/**
+ * Returns an item by id from a given table. Any updates made to the item elsewhere in the app
+ * will cause useStoreItem to return the new value.
+ *
+ * Undefined is returned if the value does not exist in the table and null is returned while
+ * the item is being loaded.
+ *
+ * @param table Name of table to get item from. If null or undefined useStoreItem will return undefined
+ * @param id Id of item to get from table. If null or undefined useStoreItem will return undefined
+ * @param options Additional options
+ */
+export const useStoreItem=<T extends Record<string,any>=Record<string,any>>(
+    table:TypeDef<T,any>|string|null|undefined,
+    id:string|null|undefined,
+    options?:UseStoreItemOptions
+):T|null|undefined=>;
+
+/**
+ * Returns all matching items
+ *
+ * null is returned while the items are loading.
+ *
+ * @param table Name of table to get item from. If null or undefined useStoreItem will return undefined
+ * @param id Id of item to get from table. If null or undefined useStoreItem will return undefined
+ * @param options Additional options
+ */
+export const useStoreMatchingItems=<T extends Record<string,any>=Record<string,any>>(
+    table:TypeDef<T>|string|null|undefined,
+    match:Partial<T>|null|undefined,
+    options?:UseStoreItemsOptions
+):T[]|null=>;
+
+
+/**
+ * Returns all matching items
+ *
+ * Undefined is returned if the value does not exist in the table and null is returned while
+ * the item is being loaded.
+ *
+ * @param table Name of table to get item from. If null or undefined useStoreItem will return undefined
+ * @param id Id of item to get from table. If null or undefined useStoreItem will return undefined
+ * @param options Additional options
+ */
+export const useStoreFirstMatchingItem=<T extends Record<string,any>=Record<string,any>>(
+    table:TypeDef<T>|string|null|undefined,
+    match:Partial<T>|null|undefined,
+    options?:UseStoreItemsOptions
+):T|null|undefined=>;
+
+```
+
+## Full screen screens
+The `useFullPage` hook can be used to display a full screen page without the main navigation bar.
+
+example:
+``` tsx
+import { useFullPage } from "@/lib/hooks";
+
+function ExampleComponent(){
+
+    useFullPage();
+
+    return (
+        <div></div>
+    )
+}
+```
+
+## Form Data
+When creating forms store form data in a typed useState variable.
+
+Zod schemas can be imported from `@/lib/schema` to validate types stored in the database.
+
+Form state example:
+``` tsx
+
+interface NewsletterForm
+{
+    name:string
+    email:string;
+}
+function ExampleComponent()
+{
+    const [newsletterData,setNewsletterData]=useState<NewsletterForm>({
+        name:'',
+        email:'',
+    });
+
+    return (
+        <form>
+            <input
+                placeholder="Enter name"
+                value={newsletterData.name}
+                onChange={e=>setNewsletterData({...newsletterData,name:e.target.value})}
+            />
+            <input
+                placeholder="Enter email"
+                value={newsletterData.email}
+                onChange={e=>setNewsletterData({...newsletterData,email:e.target.value})}
+            />
+        </form>
+    )
+}
+```
+
+## Pages
+When creating NextJS pages export the page component as a default function with the function
+name reflecting the name of the page.
+
+Do not use the MainLayout component when creating a page. The Main Layout component will be
+used by the top level App component.
+
+Include the name of the page in the className of the root element of the page component using the
+format of: "page--{PageComponentName}"
+
+Example Page with a route of "/example":
+``` tsx
+
+export default function ExamplePage(){
+
+    return (
+        <div className="page--ExamplePage">
+            Example page content
+        <div>
+    )
+}
+```
+
+## Main Layout
+The `MainLayout` component is used by the top level `App` component to render the main layout of the
+app. By default the MainLayout should render pages in a centered column with a navigation bar.
+
+### Main Layout Display modes
+Pages can use the `useFullPage` and `useNoMargins` hooks to alter the way the page is displayed.
+Implement display modes using css or class names, DO NOT change the render order or do anything
+that would cause the page to be unmounted.
+
+### Main Layout Fullscreen Mode
+Pages can request to enter into fullscreen. Use the `useIsInFullPageMode` hook imported from 
+`@/lib/hooks` to check if the page should be displayed in fullscreen mode. If useIsInFullPageMode
+returns true hide the main navigation and any other UI other than the page content.
+
+### Main Layout No Margins Mode
+Pages can request to remove all page margins so that they can display content edge to edge. Use
+the `useIsNoMarginMode` hook imported from `@/lib/hooks` to check if the page should be displayed
+in no margins mode.
+
+
+## Packages
+This is the package.json file for the project. You can only use libraries based on the dependencies
+of the package.json file.
+
+``` json
+{
+  "dependencies": {
+    "lucide-react": "^0.544.0",
+    "markdown-it": "^14.1.0",
+    "next": "15.5.4",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "rxjs": "^7.8.2",
+    "uuid": "^13.0.0",
+    "zod": "^4.1.11",
+    "supabase": "^2.33.9",
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
+
+
+```
+
+## Standard Components
+The following components can be used
+
+### Logo
+Displays the apps logo using an SVG
+
+Import: `import { Logo } from "@/components/Logo";`
+Props:
+``` ts
+interface LogoProps
+{
+    color?:string;
+    /**
+     * @default "w-8 h-8"
+     */ 
+    className?:string;
+    size?:string|number;
+}
+```
+
+### SignInRequired
+A card to display when a user does not have access to a screen with links to sign-in or register.
+Import: `import { Logo } from "@/components/SignInRequired";`
+Props:
+``` ts
+interface SignInRequiredProps
+{
+
+    /**
+     * A message to display to the user
+     */
+    message?:string;
+    className?:string;
+}
+```
+
+
+## User Registration
+
+When registering a new user store the user's name and account name in options.data object
+of the user sign-up options:
+``` ts
+await supClient().auth.signUp({
+    email: form.email.trim(),
+    password: form.password,
+    options: {
+        data: { name: form.name, accountName:form.accountName },
+    },
+});
+```
+
+When registering a new user do not explicitly insert any values into the database.
+User and account setup will be handled by the backend.
+
+
+## Utility Functions
+The following utility functions can be imported from `@/lib/util`
+
+``` ts
+export type ClassNameValue = string | false | number | null | undefined | {
+    [className: string]: any;
+} | ClassNameValue[];
+
+/**
+ * Combines class names and ignores falsy values.
+ */
+export const cn=(...classNames:ClassNameValue[]):string=>;
+```
+
+
+## Hooks
+React components can use the following hooks imported from `@/lib/hooks`
+
+``` ts
+/**
+ * Hides common UI controls such as the main nav bar.
+ * @param enabled If false the hook is disabled
+ */
+export const useFullPage=(enabled=true)=>;
+
+/**
+ * Removes all margins and paddings from the main layout while keeping the main navigation and
+ * other shared UI elements
+ * @param enabled If false the hook is disabled
+ */
+export const useNoMargins=(enabled=true)=>;
+
+/**
+ * Returns true if the page should be displayed in full screen
+ */
+export const useIsInFullPageMode=():boolean=>{
+    const count=useSubject(fullPageSubject);
+    return count>0;
+}
+
+/**
+ * Returns true if the page should remove all margins
+ */
+export const useIsNoMarginMode=():boolean=>;
+
+/**
+ * Returns the current signed-in user.
+ * null === user is being loaded
+ * undefined === user is not signed in
+ */
+export const useCurrentUser=():User|null|undefined=>;
+
+/**
+ * Returns the current account the user is signed into.
+ * null === account is being loaded
+ * undefined === No account found for user
+ */
+export const useAccount=():Account|null|undefined=>;
+
+/**
+ * Returns the role of the user in the current account.
+ * null === role is being loaded
+ * undefined === No role found for user
+ */
+export const useUserRole=():UserRole|null|undefined=>;
+
+/**
+ * Returns the information about the current user, including a user object, account object
+ * and the role the user has for the account.
+ * null === user info is being loaded
+ * undefined === user is not signed in
+ */
+export const useUserInfo=():UserInfo|null|undefined=>;
+```
+
+## Utility types
+The following utility types can be imported from `@/lib/types-util`
+
+``` ts
+export interface UserInfo
+{
+    user:User;
+    role?:UserRole;
+    membership?:AccountMembership;
+    account?:Account;
+}
+
+/**
+ * Options used with select queries
+ */
+export interface SelectOptions
+{
+    offset?:number;
+    limit?:number;
+    orderBy?:string;
+    /**
+     * If true return items will be ordered in descending order
+     */
+    orderByDesc?:boolean;
+}
+```
+
+## App Controller
+The App Controller can be accessed by calling the `app` function imported from `@/lib/app`.
+
+Use can use the App Controller to switch between accounts
+``` ts
+import { app } from `@/lib/app`
+
+async function switchAccountExample(accountId:string){
+    await app().switchAccountAsync(accountId);
+}
+```
+</coding-rules>
+
+> appendUser
+<types>
+/**
+ * Task status states
+ */
+export type TaskStatus="active"|"completed"|"archived";
+
+/**
+ * Role types for users within an account
+ */
+export type UserRole="guest"|"default"|"manager"|"admin";
+
+/**
+ * An account/organization (tenant)
+ * @table account
+ * @schema public
+ */
+export interface Account
+{
+    /**
+     * Unique id of the account
+     */
+    id:string;
+    /**
+     * Date and time the account was created
+     */
+    created_at:string;
+    /**
+     * Date and time the account was last updated
+     */
+    updated_at:string;
+    /**
+     * Display name of the account
+     */
+    name:string;
+    /**
+     * Path to the account logo image in the 'accounts' storage bucket
+     */
+    logo_image_path?:string;
+    /**
+     * Path to the account hero image in the 'accounts' storage bucket
+     */
+    hero_image_path?:string;
+}
+
+/**
+ * @insertFor Account
+ * @table account
+ * @schema public
+ */
+export interface Account_insert
+{
+    id?:string;
+    created_at?:string;
+    updated_at?:string;
+    name:string;
+    logo_image_path?:string;
+    hero_image_path?:string;
+}
+
+/**
+ * An invitation to join an account via invite link
+ * @table account_invite
+ * @schema public
+ */
+export interface AccountInvite
+{
+    /**
+     * Unique id of the account invite
+     */
+    id:string;
+    /**
+     * Date and time the invite was created
+     */
+    created_at:string;
+    /**
+     * The account this invite grants access to
+     */
+    account_id:string;
+    /**
+     * The user who created/sent the invite
+     */
+    invited_by_user_id?:string;
+    /**
+     * The invite code to be used in the accept link
+     */
+    code:string;
+    /**
+     * Optional email the invite was intended for
+     */
+    email?:string;
+    /**
+     * The role the invite grants upon acceptance
+     */
+    role:string;
+    /**
+     * When the invite expires (if set)
+     */
+    expires_at?:string;
+    /**
+     * When the invite was accepted
+     */
+    accepted_at?:string;
+    /**
+     * The user who accepted the invite
+     */
+    accepted_by_user_id?:string;
+    /**
+     * When the invite was revoked (if revoked)
+     */
+    revoked_at?:string;
+}
+
+/**
+ * @insertFor AccountInvite
+ * @table account_invite
+ * @schema public
+ */
+export interface AccountInvite_insert
+{
+    id?:string;
+    created_at?:string;
+    account_id:string;
+    invited_by_user_id?:string;
+    code:string;
+    email?:string;
+    role?:string;
+    expires_at?:string;
+    accepted_at?:string;
+    accepted_by_user_id?:string;
+    revoked_at?:string;
+}
+
+/**
+ * Links a user to an account with a role
+ * @table account_membership
+ * @schema public
+ */
+export interface AccountMembership
+{
+    /**
+     * Unique id of the account membership
+     */
+    id:string;
+    /**
+     * Date and time the membership was created
+     */
+    created_at:string;
+    /**
+     * Date and time the member last accessed the account
+     */
+    last_accessed_at:string;
+    /**
+     * The user this membership belongs to
+     */
+    user_id:string;
+    /**
+     * The account this membership belongs to
+     */
+    account_id:string;
+    /**
+     * The role of the user within the account
+     */
+    role:string;
+}
+
+/**
+ * @insertFor AccountMembership
+ * @table account_membership
+ * @schema public
+ */
+export interface AccountMembership_insert
+{
+    id?:string;
+    created_at?:string;
+    last_accessed_at?:string;
+    user_id:string;
+    account_id:string;
+    role?:string;
+}
+
+/**
+ * A task belonging to an account
+ * @table task
+ * @schema public
+ */
+export interface Task
+{
+    /**
+     * Unique id of the task
+     */
+    id:string;
+    /**
+     * Date and time the task was created
+     */
+    created_at:string;
+    /**
+     * Date and time the task was last updated
+     */
+    updated_at:string;
+    /**
+     * The account this task belongs to
+     */
+    account_id:string;
+    /**
+     * The user who created the task
+     */
+    created_by_user_id?:string;
+    /**
+     * The user who last updated the task
+     */
+    updated_by_user_id?:string;
+    /**
+     * The title of the task
+     */
+    title:string;
+    /**
+     * Current status of the task
+     */
+    status:string;
+    /**
+     * Detailed description of the task in markdown
+     */
+    description_markdown:string;
+    /**
+     * Timestamp when the task was marked as completed
+     */
+    completed_at?:string;
+    /**
+     * Timestamp when the task was archived
+     */
+    archived_at?:string;
+}
+
+/**
+ * @insertFor Task
+ * @table task
+ * @schema public
+ */
+export interface Task_insert
+{
+    id?:string;
+    created_at?:string;
+    updated_at?:string;
+    account_id:string;
+    created_by_user_id?:string;
+    updated_by_user_id?:string;
+    title:string;
+    status?:string;
+    description_markdown?:string;
+    completed_at?:string;
+    archived_at?:string;
+}
+
+/**
+ * A user
+ * @table user
+ * @schema public
+ */
+export interface User
+{
+    /**
+     * Unique id of the user
+     */
+    id:string;
+    /**
+     * Date and time the user was created
+     */
+    created_at:string;
+    /**
+     * Date and time the user was last updated
+     */
+    updated_at:string;
+    /**
+     * Full name of the user
+     */
+    name:string;
+    /**
+     * Email address of the user (unique)
+     */
+    email:string;
+    /**
+     * Path to the user's profile image in the 'accounts' storage bucket: {account_id}/users/{user_id}/...
+     */
+    profile_image_path?:string;
+    /**
+     * Path to the user's hero image in the 'accounts' storage bucket: {account_id}/users/{user_id}/...
+     */
+    hero_image_path?:string;
+}
+
+/**
+ * @insertFor User
+ * @table user
+ * @schema public
+ */
+export interface User_insert
+{
+    id?:string;
+    created_at?:string;
+    updated_at?:string;
+    name:string;
+    email:string;
+    profile_image_path?:string;
+    hero_image_path?:string;
+}
+</types>
+
+> appendUser
+<styling>
+## Styling Framework
+Use Tailwinds for styling
+
+## Look and Feel
+- minimalistic
+- light hearted
+- good use of negative space
+- gradient backgrounds
+- rounded
+
+## Custom Color Palette
+``` css
+:root{
+    --light-blue: #a8d5e2ff;
+    --orange-web: #f9a620ff;
+    --mustard: #ffd449ff;
+    --forest-green: #548c2fff;
+    --pakistan-green: #104911ff;
+}
+```
+
+Brand color: #f9a620ff (--orange-web)
+Secondary color: #548c2fff (--forest-green)
+
+
+## Rules
+Use the brand color sparingly. The brand color should only use as a background for the most important elements.
+The brand color can be used as a thin border color in situations where an element should be highlighted
+but is not a main CTA.
+</styling>
+
+> appendUser
+<style-guide>
+# Task Bee UI Style Guide
+
+This guide shows how to use the Tailwind v4 theme and utilities defined in tailwind-theme to build a minimal, light-hearted interface with generous negative space, gradient backgrounds, and rounded surfaces.
+
+Key principles
+- Use the brand color (#f9a620ff) sparingly. It should primarily appear:
+  - As the background of the most important CTA only
+  - As a thin border or subtle ring highlight when an element needs attention but is not a primary CTA
+- Prefer stacked, columnar layouts for responsiveness
+- Keep copy short; avoid long button labels
+- Do not set fixed widths on buttons that contain text
+- Use gentle gradients, soft shadows, and rounded corners
+
+Typography and surfaces
+- Headings use the Nunito family and body text uses Inter
+- Default surface styles: .surface and .card for low-contrast panels
+- Prose content like task descriptions and exports use .markdown
+
+Layout utilities
+- app-container centers and bounds page content
+- page-stack creates a vertical flow with consistent gaps
+- section-pad provides vertical rhythm
+- full-bleed allows content to span edge-to-edge
+
+
+Getting started
+
+- Ensure your global stylesheet includes top-level Tailwind v4 imports and the @plugin line:
+  - @import "tailwindcss";
+  - @plugin "@tailwindcss/typography";
+- Use the pre-defined utilities and components from the theme; avoid redefining them unless necessary
+- Favor .btn-primary only for the page’s single most important CTA
+
+Example: Landing hero with gradient background
+
+```html
+<section class="bg-app">
+    <div class="app-container section-pad">
+        <div class="page-stack items-center text-center">
+            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight">
+                Task Bee — Light-hearted task management for teams
+            </h1>
+            <p class="text-zinc-600 max-w-2xl">
+                Capture, organize, complete, and archive tasks with rich markdown and simple sharing.
+            </p>
+
+            <div class="flex items-center gap-3">
+                <!-- Primary CTA: use brand background only here -->
+                <button class="btn-primary">
+                    Get started
+                </button>
+                <!-- Secondary and Ghost for supporting actions -->
+                <a class="btn-secondary" href="#features">See features</a>
+                <a class="btn-ghost" href="/sign-in">Sign in</a>
+            </div>
+
+            <div class="brand-frame max-w-3xl w-full p-6">
+                <p class="text-sm text-zinc-600">
+                    Tip: Reserve the brand color for the most important CTA or thin highlight borders.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+```
+
+Example: Page shell with centered content
+
+```html
+<main class="page--DashboardPage page--full">
+    <header class="app-container section-pad">
+        <div class="flex items-center justify-between">
+            <h2 class="text-2xl font-bold">Dashboard</h2>
+            <div class="flex items-center gap-2">
+                <a class="btn-ghost" href="/account">Account</a>
+                <a class="btn-secondary" href="/profile">Profile</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="page-container">
+        <div class="page-stack">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-xl font-semibold">Tasks</h3>
+                    <p class="text-zinc-600">Create and manage tasks for your team</p>
+                </div>
+                <!-- Important action: primary CTA -->
+                <button class="btn-primary">New Task</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                <!-- Task card -->
+                <article class="card card--hover">
+                    <div class="flex items-start justify-between">
+                        <h4 class="font-semibold">Launch checklist</h4>
+                        <span class="badge">Active</span>
+                    </div>
+                    <p class="mt-2 text-zinc-600">Finalize copy, visuals, and rollout plan.</p>
+                    <div class="mt-4 flex items-center gap-2">
+                        <button class="btn-secondary">Mark complete</button>
+                        <button class="btn-ghost">Archive</button>
+                    </div>
+                </article>
+
+                <!-- Completed -->
+                <article class="card">
+                    <div class="flex items-start justify-between">
+                        <h4 class="font-semibold">Write onboarding docs</h4>
+                        <span class="badge--success">Completed</span>
+                    </div>
+                    <p class="mt-2 text-zinc-600">Add task details and markdown examples.</p>
+                    <div class="mt-4 flex items-center gap-2">
+                        <button class="btn-ghost">View</button>
+                    </div>
+                </article>
+
+                <!-- Subtle highlight using brand-border-thin (not a main CTA) -->
+                <article class="card brand-border-thin">
+                    <div class="flex items-start justify-between">
+                        <h4 class="font-semibold">Retro notes</h4>
+                        <span class="badge">Active</span>
+                    </div>
+                    <p class="mt-2 text-zinc-600">Collect wins and improvements.</p>
+                    <div class="mt-4 flex items-center gap-2">
+                        <button class="btn-secondary">Open</button>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+</main>
+```
+
+Buttons
+
+- .btn-primary: Use for the single most important CTA on a page
+- .btn-secondary: For common actions
+- .btn-ghost: For low emphasis actions, dismissals, navigation
+- .btn-icon: For square icon-only buttons
+
+Examples
+
+```html
+<div class="flex flex-wrap items-center gap-3">
+    <button class="btn-primary">Create task</button>
+    <button class="btn-secondary">Export</button>
+    <button class="btn-ghost">Share</button>
+
+    <!-- Icon-only button (e.g., archive) -->
+    <button class="btn-icon" aria-label="Archive">
+        <!-- Replace with your SVG icon -->
+        <svg class="w-5 h-5 text-zinc-700" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M6 7v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7" stroke="currentColor" stroke-width="1.5"/></svg>
+    </button>
+
+    <!-- Disabled state -->
+    <button class="btn-primary" disabled>Submitting…</button>
+</div>
+```
+
+Inputs and forms
+
+Use .input, .textarea, and .select. Focus states are built-in and use a subtle brand ring. Invalid state can be toggled with aria-invalid="true" or .invalid.
+
+```html
+<form class="card max-w-xl space-y-4">
+    <div>
+        <label class="block text-sm font-medium mb-1">Title</label>
+        <input class="input" placeholder="Enter task title" />
+    </div>
+
+    <div>
+        <label class="block text-sm font-medium mb-1">Status</label>
+        <select class="select">
+            <option>Active</option>
+            <option>Completed</option>
+            <option>Archived</option>
+        </select>
+    </div>
+
+    <div>
+        <label class="block text-sm font-medium mb-1">Details (Markdown)</label>
+        <textarea class="textarea h-40" placeholder="Write markdown details here..."></textarea>
+    </div>
+
+    <!-- Example invalid input -->
+    <div>
+        <label class="block text-sm font-medium mb-1">Assignee</label>
+        <input class="input" aria-invalid="true" placeholder="Required field" />
+        <p class="mt-1 text-sm text-red-600">This field is required</p>
+    </div>
+
+    <div class="flex items-center gap-2">
+        <button class="btn-primary">Save</button>
+        <button class="btn-ghost" type="button">Cancel</button>
+    </div>
+</form>
+```
+
+Links
+
+Links use the secondary color and a subtle underline by default. Use .link--muted for low emphasis and .link--brand for brand moments.
+
+```html
+<p class="text-zinc-700">
+    Need help? <a class="link" href="/docs">Read the docs</a> or
+    <a class="link link--muted" href="/support">contact support</a>.
+</p>
+```
+
+Badges and status
+
+- .badge for a neutral label
+- .badge--success for completed or success states
+
+```html
+<div class="flex items-center gap-2">
+    <span class="badge">Active</span>
+    <span class="badge--success">Completed</span>
+</div>
+```
+
+Avatars
+
+Use .avatar and apply sizing with width and height classes.
+
+```html
+<div class="flex items-center gap-3">
+    <div class="avatar w-10 h-10">
+        <img class="w-full h-full rounded-full object-cover" src="https://placehold.co/80x80" alt="User avatar" />
+    </div>
+    <div>
+        <div class="font-medium">Alex Rivera</div>
+        <div class="text-sm text-zinc-600">Manager</div>
+    </div>
+</div>
+```
+
+Brand highlights (non-CTA)
+
+Use brand-border-thin for soft emphasis or brand-ring for a focus/selection style highlight without using brand background.
+
+```html
+<!-- Thin border highlight -->
+<div class="card brand-border-thin">
+    <div class="flex items-center justify-between">
+        <h4 class="font-semibold">Share link</h4>
+        <span class="badge">Info</span>
+    </div>
+    <p class="mt-2 text-zinc-600 break-all">
+        https://app.taskbee.io/task/123
+    </p>
+    <div class="mt-4 flex items-center gap-2">
+        <button class="btn-secondary">Copy</button>
+        <button class="btn-ghost">Open</button>
+    </div>
+</div>
+
+<!-- Brand ring style selection (e.g., selected card) -->
+<div class="card brand-ring">
+    <p class="text-zinc-700">This task is currently selected.</p>
+</div>
+```
+
+Dividers and sections
+
+Use divider to separate blocks of content.
+
+```html
+<section class="card">
+    <h3 class="text-lg font-semibold">Task details</h3>
+    <p class="text-zinc-600">Context and meta information for the task.</p>
+
+    <div class="my-4 divider"></div>
+
+    <ul class="list-disc pl-6 text-zinc-700 space-y-1">
+        <li>Created by: Alex Rivera</li>
+        <li>Account: Bee Org</li>
+        <li>Last updated: Today</li>
+    </ul>
+</section>
+```
+
+Markdown
+
+Wrap rendered Markdown content in .markdown to enable readable typography, code blocks, and blockquotes.
+
+```html
+<article class="card">
+    <div class="markdown">
+        <h2>Release notes</h2>
+        <p>We added <code>export as .md</code> and improved task previews.</p>
+        <pre><code>// Example snippet
+function focusTask(id) {
+    console.log("Focusing task", id);
+}
+</code></pre>
+        <blockquote>
+            Smooth and clear – love the preview mode!
+        </blockquote>
+        <p>Learn more in the <a href="/docs">docs</a>.</p>
+    </div>
+</article>
+```
+
+Backgrounds
+
+- bg-app for subtle brand-flavored page backgrounds
+- bg-surface-soft for elevated panels or hero frames
+
+```html
+<section class="bg-app">
+    <div class="app-container section-pad">
+        <div class="card bg-surface-soft">
+            <h3 class="text-xl font-semibold">Welcome back</h3>
+            <p class="text-zinc-600">Here’s what’s happening in your workspace.</p>
+        </div>
+    </div>
+</section>
+```
+
+Page modes
+
+- Use page--full to ensure the page fills the viewport height
+- When a page needs edge-to-edge content (e.g., fullscreen editor), apply page--no-margins to the root and rely on .page-container overrides
+
+```html
+<!-- Full-height page -->
+<main class="page--TaskDetailPage page--full">
+    <section class="page-container">
+        <div class="page-stack">
+            <!-- Title and actions -->
+            <div class="flex items-center justify-between">
+                <h1 class="text-2xl font-bold">Task: Update docs</h1>
+                <div class="flex gap-2">
+                    <button class="btn-secondary">Mark complete</button>
+                    <button class="btn-ghost">Archive</button>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <aside class="card">
+                    <h4 class="font-semibold">Metadata</h4>
+                    <dl class="mt-2 text-sm text-zinc-700 space-y-1">
+                        <div class="flex justify-between"><dt>Status</dt><dd>Active</dd></div>
+                        <div class="flex justify-between"><dt>Account</dt><dd>Bee Org</dd></div>
+                        <div class="flex justify-between"><dt>Owner</dt><dd>Alex</dd></div>
+                    </dl>
+                </aside>
+                <article class="card lg:col-span-2">
+                    <div class="markdown">
+                        <h2>Details</h2>
+                        <p>Use preview mode to verify headings, code, and links.</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+</main>
+```
+
+Tables and dense data
+
+Prefer cards and lists. If a table is necessary, maintain generous spacing and clear dividers.
+
+```html
+<div class="card overflow-x-auto">
+    <table class="w-full text-left text-sm">
+        <thead class="text-zinc-600">
+            <tr class="border-b border-zinc-200">
+                <th class="py-2">Title</th>
+                <th class="py-2">Status</th>
+                <th class="py-2">Updated</th>
+                <th class="py-2"></th>
+            </tr>
+        </thead>
+        <tbody class="text-zinc-800">
+            <tr class="border-b border-zinc-100">
+                <td class="py-2">Finalize landing copy</td>
+                <td class="py-2"><span class="badge">Active</span></td>
+                <td class="py-2 text-zinc-600">1h ago</td>
+                <td class="py-2 text-right">
+                    <button class="btn-ghost">Open</button>
+                </td>
+            </tr>
+            <tr>
+                <td class="py-2">Add export markdown</td>
+                <td class="py-2"><span class="badge--success">Completed</span></td>
+                <td class="py-2 text-zinc-600">Yesterday</td>
+                <td class="py-2 text-right">
+                    <button class="btn-ghost">View</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+```
+
+Do and don’t
+
+- Do
+  - Use .btn-primary once per page for the most important CTA
+  - Use brand-border-thin or brand-ring for non-CTA highlights
+  - Prefer vertical stacks and cards for structure
+  - Keep inputs full width within forms
+- Don’t
+  - Don’t use the brand color as a background on multiple buttons in the same view
+  - Don’t set fixed widths on text buttons
+  - Don’t overload cards with dense borders and shadows
+
+Accessibility tips
+
+- Ensure sufficient contrast on text and icons over gradients and surfaces
+- Label icon-only buttons with aria-label
+- Use semantic HTML for lists, headings, and buttons
+- Make focusable elements visible; the theme provides a brand-tinted focus ring on inputs and buttons
+
+Print-friendly markdown
+
+- The theme includes a print stylesheet for .markdown
+- Hide non-essential UI with .no-print when printing exports
+
+```html
+<article class="markdown">
+    <h1>Task: Sprint plan</h1>
+    <p class="no-print text-zinc-600">This header note won’t appear in print.</p>
+    <p>Printed pages use a clean, high-contrast layout.</p>
+</article>
+```
+
+Quick reference: commonly used utilities
+
+- Layout: app-container, page-stack, section-pad, full-bleed
+- Surfaces: surface, card, card--hover, surface-gradient
+- CTAs: btn-primary, btn-secondary, btn-ghost, btn-icon
+- Inputs: input, textarea, select, input-focus-ring, input-invalid
+- Text and links: link, link--muted, link--brand
+- Indicators: badge, badge--success, divider, avatar
+- Brand accents: brand-border-thin, brand-ring, brand-frame
+- Backgrounds: bg-app, bg-surface-soft
+- Prose: markdown
+
+Example: Account header with members
+
+```html
+<header class="page-container">
+    <div class="card">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="avatar w-12 h-12">
+                    <img class="w-full h-full rounded-full object-cover" src="https://placehold.co/96" alt="Account logo" />
+                </div>
+                <div>
+                    <h2 class="text-xl font-semibold">Bee Org</h2>
+                    <p class="text-sm text-zinc-600">ID: 3fd7…9b2</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button class="btn-secondary">Edit</button>
+                <button class="btn-primary">Invite</button>
+            </div>
+        </div>
+
+        <div class="divider my-4"></div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+            <a class="card card--hover" href="/profile/123">
+                <div class="flex items-center gap-3">
+                    <div class="avatar w-10 h-10">
+                        <img class="w-full h-full rounded-full object-cover" src="https://placehold.co/80" alt="Member" />
+                    </div>
+                    <div class="font-medium">Alex Rivera</div>
+                </div>
+            </a>
+            <a class="card card--hover" href="/profile/456">
+                <div class="flex items-center gap-3">
+                    <div class="avatar w-10 h-10">
+                        <img class="w-full h-full rounded-full object-cover" src="https://placehold.co/80" alt="Member" />
+                    </div>
+                    <div class="font-medium">Casey Lee</div>
+                </div>
+            </a>
+            <!-- More members... -->
+        </div>
+    </div>
+</header>
+```
+
+Example: Task detail with edit/preview chrome
+
+```html
+<section class="page-container">
+    <div class="page-stack">
+        <div class="card">
+            <div class="flex items-center justify-between">
+                <h1 class="text-2xl font-bold">Add export to Markdown</h1>
+                <div class="flex items-center gap-2">
+                    <button class="btn-secondary">Mark complete</button>
+                    <button class="btn-ghost">Archive</button>
+                    <button class="btn-secondary">Download .md</button>
+                </div>
+            </div>
+
+            <div class="divider my-4"></div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <!-- Editor -->
+                <div class="card bg-surface-soft">
+                    <h3 class="font-semibold mb-2">Edit</h3>
+                    <textarea class="textarea h-64" placeholder="# Heading
+Write details in markdown..."></textarea>
+                </div>
+
+                <!-- Preview -->
+                <div class="card">
+                    <h3 class="font-semibold mb-2">Preview</h3>
+                    <div class="markdown">
+                        <h2>Heading</h2>
+                        <p>Write details in markdown…</p>
+                        <ul>
+                            <li>Bulleted lists</li>
+                            <li>Inline <code>code</code></li>
+                            <li>Links and quotes</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subtle highlight (non-CTA) using brand border -->
+        <div class="card brand-border-thin">
+            <div class="flex items-center justify-between">
+                <p class="text-zinc-700">Share a link to this task with teammates.</p>
+                <button class="btn-secondary">Copy link</button>
+            </div>
+        </div>
+    </div>
+</section>
+```
+
+With these utilities and patterns, you can quickly assemble cohesive, brand-consistent interfaces that feel focused and friendly, while keeping the brand color special and sparingly used.
+</style-guide>
+
+> appendUser
+<editor-config>
+root = true
+
+[*]
+indent_style = space
+indent_size = 4
+</editor-config>
+
+> appendUser
+<component>
+{
+    "name": "Logo",
+    "description": "An SVG logo with a default size of 1rem",
+    "propsInterface": "export interface LogoProps {\n    color?: string;\n    className?: string;\n    size?: string | number;\n}",
+    "import": "import { Logo } from \"@/components/Logo\""
+}
+</component>
+
+> appendUser
+Generate a detailed description of the component
+
+> nop
+//_END_MAKE_TARGET_INPUT_
+
+
+@time 2025-10-27T06:48:00-04:00
+@tokenUsage 12896 / 3734 / $0.020787500000000004
+@model gpt-5-2025-08-07
+> assistant
+# Logo
+
+A lightweight SVG mark for Task Bee. The Logo component is built for flexibility and aligns with the project’s minimalist, light-hearted visual language. It inherits color by default, scales cleanly at any size, and can be integrated into headers, cards, empty states, and printed exports.
+
+Import
+```tsx
+import { Logo } from "@/components/Logo";
+```
+
+Component purpose
+- Brand marker for navigation, page headers, and contextual brand moments
+- Neutral by default; can take on ambient text color or an explicit color
+- Works in light and dark surfaces, cards, and gradient areas
+
+API
+- Props
+  - color?: string
+    - Sets the SVG color directly. Defaults to inherit (currentColor).
+    - Accepts hex, hsl, named colors, or CSS variables like var(--forest-green).
+  - className?: string
+    - Tailwind classes for sizing and coloring (for example, w-6 h-6 text-zinc-800).
+    - Recommended default size for general UI: w-8 h-8.
+  - size?: string | number
+    - Sets width and height on the SVG.
+    - number is interpreted as pixels, string can be any CSS unit (for example, "1.25rem", "32px").
+    - Default: 1rem.
+- Notes on precedence
+  - Avoid passing both size and Tailwind w-/h- classes at the same time. Choose one strategy for sizing to keep results predictable.
+  - Color typically inherits from the nearest text color. Set color via text-* utilities or the color prop, but avoid both simultaneously.
+
+Design guidance and brand usage
+- Use the brand color (#f9a620ff, --orange-web) sparingly
+  - Appropriate uses:
+    - As a background only for the most important CTA on a page (not for the logo itself)
+    - As a thin border or ring highlight around a logo container when you need emphasis that isn’t a primary CTA (for example, brand-border-thin, brand-ring)
+  - Preferred logo color in most contexts: neutral text colors (text-zinc-700/800) or the secondary color (--forest-green)
+- Spacing and composition
+  - Place the logo alongside text using a horizontal stack with items-center and modest gaps (for example, gap-2)
+  - Keep generous negative space and rounded edges for containers (for example, card, brand-frame)
+  - On gradient backgrounds, ensure sufficient contrast for the logo color (for example, text-white or text-zinc-900 depending on gradient)
+
+Recommended sizes by context
+- Navigation and toolbars: 24px (w-6 h-6)
+- Cards and small badges: 20px (w-5 h-5)
+- Page headers or hero frames: 48px (w-12 h-12)
+
+Basic usage
+```tsx
+import { Logo } from "@/components/Logo";
+
+export function AppNav() {
+    return (
+        <header className="app-container section-pad">
+            <a href="/" className="flex items-center gap-2">
+                <Logo className="w-6 h-6 text-zinc-800" />
+                <span className="font-semibold">Task Bee</span>
+            </a>
+        </header>
+    );
+}
+```
+
+Sizing with the size prop
+```tsx
+// Number => pixels, string => any CSS unit
+<Logo size={24} />           // 24px
+<Logo size="1.5rem" />       // 1.5rem
+<Logo size="2.75rem" />      // 2.75rem
+```
+
+Sizing with Tailwind (recommended for consistency)
+```tsx
+// Prefer Tailwind width/height utilities for standard sizing tokens
+<Logo className="w-5 h-5" />
+<Logo className="w-6 h-6" />
+<Logo className="w-12 h-12" />
+```
+
+Controlling color
+```tsx
+// Inherit from parent text color (default)
+<div className="text-zinc-800">
+    <Logo className="w-6 h-6" />
+</div>
+
+// Explicit Tailwind text color
+<Logo className="w-6 h-6 text-zinc-700" />
+
+// Using CSS variables from the palette
+<Logo className="w-6 h-6" style=\{{ color: "var(--forest-green)" }} />
+
+// Using the color prop directly
+<Logo size={28} color="#548c2f" />
+```
+
+Brand-safe highlights (non-CTA)
+```tsx
+// Subtle highlight around a logo without using brand as a background
+<div className="card brand-border-thin inline-flex items-center gap-2 p-3">
+    <Logo className="w-6 h-6 text-zinc-800" />
+    <span className="font-medium">Task Bee</span>
+</div>
+
+// Selection/focus moment using a ring
+<div className="card brand-ring inline-flex items-center gap-2 p-3">
+    <Logo className="w-6 h-6 text-zinc-800" />
+    <span className="font-medium">Workspace</span>
+</div>
+```
+
+Hero frame example
+```tsx
+<section className="bg-app">
+    <div className="app-container section-pad">
+        <div className="brand-frame p-6 rounded-xl inline-flex items-center gap-3">
+            <Logo className="w-12 h-12 text-zinc-900" />
+            <div>
+                <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight">Task Bee</h1>
+                <p className="text-zinc-600">Light-hearted task management for teams</p>
+            </div>
+        </div>
+    </div>
+</section>
+```
+
+Accessibility
+- Decorative use: when the logo appears alongside adjacent text like “Task Bee”, mark it decorative
+  - Add aria-hidden="true" on the SVG element if the component exposes it, or wrap the logo in an element with aria-hidden where appropriate
+- Standalone link: when the logo is used as the only element inside a home link, provide a label on the link
+  - Example: <a href="/" aria-label="Go to Task Bee home"><Logo … /></a>
+- Title for screen readers: if you need a spoken label on the SVG, add a title element or use aria-label on the SVG
+
+Do and don’t
+- Do
+  - Keep the logo neutral in most UI (text-zinc-700/800) or use the secondary green
+  - Use brand-border-thin or brand-ring for emphasis instead of filling the logo with the brand color
+  - Size the logo with Tailwind w-/h- classes for consistency across the app
+- Don’t
+  - Don’t use the brand color as a background for the logo
+  - Don’t apply brand background to multiple buttons or to non-CTA elements in the same view
+  - Don’t mix the size prop with Tailwind width/height utilities in the same instance
+
+Troubleshooting
+- The logo looks too small or large
+  - Confirm whether you’re using size or w-/h- classes, not both; use w-6 h-6 for nav, w-12 h-12 for hero
+- The color isn’t changing
+  - If you provided a color prop, remove text-* classes from className to avoid overrides
+  - If you rely on currentColor, set a text-* color on a parent or on the Logo itself
+- Low contrast on gradients
+  - Switch to text-white or a darker neutral to meet contrast guidelines
+
+Summary
+- Logo is an SVG that inherits color by default and scales cleanly
+- Default size is 1rem when size isn’t provided; for UI consistency, prefer Tailwind sizing (for example, w-6 h-6)
+- Follow brand rules: use brand color sparingly, and lean on borders or rings for non-CTA emphasis
+
+
+
+> user

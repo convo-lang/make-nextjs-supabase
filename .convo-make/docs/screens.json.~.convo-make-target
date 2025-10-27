@@ -1,0 +1,684 @@
+> define
+__makeRoot="../.."
+__makeFile="make.convo"
+__makeOut="docs/screens.json"
+__model="gpt-5"
+ConvoMakeOutputType=array(struct(
+    # User friendly name of the screen
+    name: string
+    # Route within the pages directory of a NextJS app. Route parameters should use square brackets
+    # and should NOT include a file extension.
+    # 
+    # - Example of route to profile page: profile
+    # - Example of a route to a task detail page: task/[taskId]
+    route: string
+    # A short description of the screen
+    description: string
+))
+__defaultResponseType="ConvoMakeOutputType"
+
+> system
+You are generating content that will be directly written to "docs/screens.json".
+DO NOT include a preamble or postamble.
+
+Always respond with the full content for "docs/screens.json", even if you are making an
+small or incremental update.
+
+> appendUser
+<screen>
+# Account
+Route: /accept-account-invite/[invite-code]
+Seen by roles: (All)
+
+
+## Requirements
+- Should allow the user to accept or decline an invite
+- If the user is not signed-in they should be asked to sign-in first
+</screen>
+
+<screen>
+# Account
+Route: /account
+Seen by roles: (All signed-in users)
+
+## Requirements
+- Shows basic account info including:
+    - name
+    - logo
+    - id - muted
+
+- Users with the admin role can edit account info
+
+- Users Sections: a grid of user cards of users that belong to the account. The cards should include the name
+of the user and their profile picture. The cards should link to the public profile of the user
+
+- link to create a new account
+
+- Account admins should be able to invite users to the account via an invite link: `https://${location.host}/accept-account-invite/${inviteCode}`
+</screen>
+
+<screen>
+# Dashboard
+Route: /dashboard
+Seen by roles: (all signed in users)
+
+A dashboard for signed in users where they can manage tasks for their company.
+
+## Requirements
+- User can download tasks as markdown file
+- User can add tasks
+- User can remove tasks
+- User can mark tasks as completed
+- User can archive tasks
+</screen>
+
+<screen>
+# Landing page
+Route: /
+Seen by roles: all
+
+A marketing page about the app with a large eye catching hero section. The hero section
+should be full screen height carousel displaying the top value props of the app.
+</screen>
+
+<screen>
+## Profile
+Route: /profile
+Seen by roles: (All signed-in users)
+
+A profile page for the user. This page is only seen by the user.
+
+### Requirements
+- Show user information
+- Show list of all accounts the user belongs to with option to switch to account
+- The user should be able to edit their profile with the exception of their email address.
+</screen>
+
+<screen>
+## Public Profile
+Route: /profile/[user-id]
+Seen by roles: (All signed-in users)
+
+A profile page as seen by other users
+
+### Requirements
+- Show user information
+- Account admins can see the user's role
+- Account admins can change the user's role
+- Account admins should not be able to change their own role
+</screen>
+
+<screen>
+# Register
+Route: /register
+Seen by roles: all
+
+Allows a user to register as a new user and create an organizational account.
+
+If the user is already sign-in they should be show a message telling them they are already registered.
+
+Inputs:
+- name
+- email
+- Organization name
+- password
+</screen>
+
+<screen>
+# Sign-in
+Route: /sign-in
+Seen by roles: all
+
+Allows a user to sign-in as an exiting user.
+
+If the user is already sign-in they should be show a message telling them they are already signed in.
+
+Inputs:
+- email
+- password
+</screen>
+
+<screen>
+# Task Detail
+Route: /task/[task-id]
+Seen by roles: (all signed in users)
+
+A detail page for managing tasks
+</screen>
+
+> appendUser
+<app-description>
+## Task Bee
+
+A minimal, light-hearted task manager for companies. Task Bee helps teams capture, organize, complete, and archive tasks, with rich markdown details and simple sharing.
+
+### Overview
+Task Bee enables signed-in users to manage their organization’s tasks in a multi-tenant setup. Tasks can include detailed markdown content with edit and preview modes, can be marked complete, archived, and exported as a markdown file. Account admins can manage account details and user roles, while all signed-in users gain access to dashboards and task detail pages.
+
+## Features
+
+- Task management
+  - Add tasks
+  - Remove tasks
+  - Mark tasks as completed
+  - Archive tasks
+  - Download tasks as a markdown file
+  - Store detailed task information in markdown format
+    - Includes both edit and preview modes
+  - Share a link to a task detail page
+
+- Account and access
+  - Multi-tenant accounts with role-based visibility and permissions
+  - Invite users to an account via an invite link
+  - View account info, logo, and ID
+  - Admins can edit account info and manage member roles
+  - View user profiles (self and public view)
+  - Switch between accounts
+
+## User Roles
+
+- guest
+  - A user not signed in
+- default
+  - Default role for a signed-in user belonging to an account
+- manager
+  - An account manager with elevated capabilities
+- admin
+  - A super admin that can manage any account and its users
+
+## Screens
+
+### Landing page
+- Route: /
+- Seen by roles: all
+- Description: A marketing page for Task Bee with a large, eye-catching full-screen hero carousel highlighting the app’s top value propositions.
+
+### Register
+- Route: /register
+- Seen by roles: all
+- Description: Register a new user and create an organizational account. If already signed in, a message indicates the user is already registered.
+- Inputs:
+  - name
+  - email
+  - Organization name
+  - password
+
+### Sign-in
+- Route: /sign-in
+- Seen by roles: all
+- Description: Sign in as an existing user. If already signed in, a message indicates the user is already signed in.
+- Inputs:
+  - email
+  - password
+
+### Dashboard
+- Route: /dashboard
+- Seen by roles: all signed-in users
+- Description: The central place for managing tasks for the current company/account.
+- Capabilities:
+  - Add, remove tasks
+  - Mark tasks as completed
+  - Archive tasks
+  - Download tasks as markdown
+
+### Task Detail
+- Route: /task/[task-id]
+- Seen by roles: all signed-in users
+- Description: A dedicated page to manage and view a single task.
+- Capabilities:
+  - View and edit task details in markdown
+    - Toggle between edit and preview modes
+  - Mark as completed
+  - Archive task
+  - Download this task as markdown
+  - Share a link to this task
+
+### Account
+- Route: /account
+- Seen by roles: all signed-in users
+- Description: Shows account information and membership.
+- Details:
+  - Displays:
+    - name
+    - logo
+    - id (muted)
+  - Admin-only:
+    - Edit account info
+    - Invite users via invite link:
+      - https://${location.host}/accept-account-invite/${inviteCode}
+  - Users section:
+    - Grid of user cards (name + profile picture), linking to each user’s public profile
+  - Link to create a new account
+
+### Accept Account Invite
+- Route: /accept-account-invite/[invite-code]
+- Seen by roles: all
+- Description: Accept or decline an invite to join an account. If not signed in, users are prompted to sign in first.
+
+### Profile
+- Route: /profile
+- Seen by roles: all signed-in users
+- Description: The private profile page for the current user.
+- Capabilities:
+  - View personal info
+  - View all accounts the user belongs to, with option to switch accounts
+  - Edit profile fields, except email address (not editable)
+
+### Public Profile
+- Route: /profile/[user-id]
+- Seen by roles: all signed-in users
+- Description: Public-facing profile page as seen by other users within the account context.
+- Admin functionality:
+  - Admins can see the user’s role
+  - Admins can change the user’s role
+  - Admins cannot change their own role
+
+## Task Model and Behaviors
+
+- A task contains:
+  - Title and status (active, completed, archived)
+  - Detailed description in markdown
+  - Metadata related to its account
+- Actions:
+  - Edit details in markdown with a live preview mode
+  - Mark complete for workflow visibility
+  - Archive to keep the dashboard focused while retaining historical context
+  - Export/download as a markdown file for offline sharing or documentation
+  - Share link to the task detail page with teammates
+
+## Styling
+
+- Framework: Tailwind CSS
+- Look and feel:
+  - Minimalistic
+  - Light-hearted
+  - Good use of negative space
+  - Gradient backgrounds
+  - Rounded corners and surfaces
+- Custom color palette:
+  - CSS variables:
+    - --light-blue: #a8d5e2ff
+    - --orange-web: #f9a620ff (Brand color)
+    - --mustard: #ffd449ff
+    - --forest-green: #548c2fff (Secondary)
+    - --pakistan-green: #104911ff
+- Brand usage rules:
+  - Use the brand color (#f9a620ff) sparingly
+  - Reserve the brand color primarily for the most important CTAs or as a subtle thin border for highlights when not a main CTA
+
+## Summary
+
+Task Bee streamlines task tracking for companies with a clear, role-aware experience. Users can collaborate on tasks, enrich them with markdown detail, and maintain clean dashboards by completing and archiving items. Admins manage their accounts and memberships, while a thoughtful, minimal visual style ensures focus and clarity.
+</app-description>
+
+> appendUser
+<types>
+/**
+ * Task status states
+ */
+export type TaskStatus="active"|"completed"|"archived";
+
+/**
+ * Role types for users within an account
+ */
+export type UserRole="guest"|"default"|"manager"|"admin";
+
+/**
+ * An account/organization (tenant)
+ * @table account
+ * @schema public
+ */
+export interface Account
+{
+    /**
+     * Unique id of the account
+     */
+    id:string;
+    /**
+     * Date and time the account was created
+     */
+    created_at:string;
+    /**
+     * Date and time the account was last updated
+     */
+    updated_at:string;
+    /**
+     * Display name of the account
+     */
+    name:string;
+    /**
+     * Path to the account logo image in the 'accounts' storage bucket
+     */
+    logo_image_path?:string;
+    /**
+     * Path to the account hero image in the 'accounts' storage bucket
+     */
+    hero_image_path?:string;
+}
+
+/**
+ * @insertFor Account
+ * @table account
+ * @schema public
+ */
+export interface Account_insert
+{
+    id?:string;
+    created_at?:string;
+    updated_at?:string;
+    name:string;
+    logo_image_path?:string;
+    hero_image_path?:string;
+}
+
+/**
+ * An invitation to join an account via invite link
+ * @table account_invite
+ * @schema public
+ */
+export interface AccountInvite
+{
+    /**
+     * Unique id of the account invite
+     */
+    id:string;
+    /**
+     * Date and time the invite was created
+     */
+    created_at:string;
+    /**
+     * The account this invite grants access to
+     */
+    account_id:string;
+    /**
+     * The user who created/sent the invite
+     */
+    invited_by_user_id?:string;
+    /**
+     * The invite code to be used in the accept link
+     */
+    code:string;
+    /**
+     * Optional email the invite was intended for
+     */
+    email?:string;
+    /**
+     * The role the invite grants upon acceptance
+     */
+    role:string;
+    /**
+     * When the invite expires (if set)
+     */
+    expires_at?:string;
+    /**
+     * When the invite was accepted
+     */
+    accepted_at?:string;
+    /**
+     * The user who accepted the invite
+     */
+    accepted_by_user_id?:string;
+    /**
+     * When the invite was revoked (if revoked)
+     */
+    revoked_at?:string;
+}
+
+/**
+ * @insertFor AccountInvite
+ * @table account_invite
+ * @schema public
+ */
+export interface AccountInvite_insert
+{
+    id?:string;
+    created_at?:string;
+    account_id:string;
+    invited_by_user_id?:string;
+    code:string;
+    email?:string;
+    role?:string;
+    expires_at?:string;
+    accepted_at?:string;
+    accepted_by_user_id?:string;
+    revoked_at?:string;
+}
+
+/**
+ * Links a user to an account with a role
+ * @table account_membership
+ * @schema public
+ */
+export interface AccountMembership
+{
+    /**
+     * Unique id of the account membership
+     */
+    id:string;
+    /**
+     * Date and time the membership was created
+     */
+    created_at:string;
+    /**
+     * Date and time the member last accessed the account
+     */
+    last_accessed_at:string;
+    /**
+     * The user this membership belongs to
+     */
+    user_id:string;
+    /**
+     * The account this membership belongs to
+     */
+    account_id:string;
+    /**
+     * The role of the user within the account
+     */
+    role:string;
+}
+
+/**
+ * @insertFor AccountMembership
+ * @table account_membership
+ * @schema public
+ */
+export interface AccountMembership_insert
+{
+    id?:string;
+    created_at?:string;
+    last_accessed_at?:string;
+    user_id:string;
+    account_id:string;
+    role?:string;
+}
+
+/**
+ * A task belonging to an account
+ * @table task
+ * @schema public
+ */
+export interface Task
+{
+    /**
+     * Unique id of the task
+     */
+    id:string;
+    /**
+     * Date and time the task was created
+     */
+    created_at:string;
+    /**
+     * Date and time the task was last updated
+     */
+    updated_at:string;
+    /**
+     * The account this task belongs to
+     */
+    account_id:string;
+    /**
+     * The user who created the task
+     */
+    created_by_user_id?:string;
+    /**
+     * The user who last updated the task
+     */
+    updated_by_user_id?:string;
+    /**
+     * The title of the task
+     */
+    title:string;
+    /**
+     * Current status of the task
+     */
+    status:string;
+    /**
+     * Detailed description of the task in markdown
+     */
+    description_markdown:string;
+    /**
+     * Timestamp when the task was marked as completed
+     */
+    completed_at?:string;
+    /**
+     * Timestamp when the task was archived
+     */
+    archived_at?:string;
+}
+
+/**
+ * @insertFor Task
+ * @table task
+ * @schema public
+ */
+export interface Task_insert
+{
+    id?:string;
+    created_at?:string;
+    updated_at?:string;
+    account_id:string;
+    created_by_user_id?:string;
+    updated_by_user_id?:string;
+    title:string;
+    status?:string;
+    description_markdown?:string;
+    completed_at?:string;
+    archived_at?:string;
+}
+
+/**
+ * A user
+ * @table user
+ * @schema public
+ */
+export interface User
+{
+    /**
+     * Unique id of the user
+     */
+    id:string;
+    /**
+     * Date and time the user was created
+     */
+    created_at:string;
+    /**
+     * Date and time the user was last updated
+     */
+    updated_at:string;
+    /**
+     * Full name of the user
+     */
+    name:string;
+    /**
+     * Email address of the user (unique)
+     */
+    email:string;
+    /**
+     * Path to the user's profile image in the 'accounts' storage bucket: {account_id}/users/{user_id}/...
+     */
+    profile_image_path?:string;
+    /**
+     * Path to the user's hero image in the 'accounts' storage bucket: {account_id}/users/{user_id}/...
+     */
+    hero_image_path?:string;
+}
+
+/**
+ * @insertFor User
+ * @table user
+ * @schema public
+ */
+export interface User_insert
+{
+    id?:string;
+    created_at?:string;
+    updated_at?:string;
+    name:string;
+    email:string;
+    profile_image_path?:string;
+    hero_image_path?:string;
+}
+</types>
+
+> appendUser
+Create a list of screens
+
+> nop
+//_END_MAKE_TARGET_INPUT_
+
+
+@time 2025-10-27T06:43:50-04:00
+@tokenUsage 3545 / 1448 / $0.00624125
+@model gpt-5-2025-08-07
+@format json
+> assistant
+[
+    {
+        "name": "Landing page",
+        "route": "index",
+        "description": "Marketing home with a full-screen hero carousel highlighting Task Bee’s top value propositions."
+    },
+    {
+        "name": "Register",
+        "route": "register",
+        "description": "Register a new user and create an organization; shows a notice if already signed in."
+    },
+    {
+        "name": "Sign-in",
+        "route": "sign-in",
+        "description": "Sign in to an existing account; shows a notice if already signed in."
+    },
+    {
+        "name": "Dashboard",
+        "route": "dashboard",
+        "description": "Manage company tasks: add, remove, complete, archive, and download as markdown."
+    },
+    {
+        "name": "Task Detail",
+        "route": "task/[taskId]",
+        "description": "View and edit a single task in markdown, toggle preview, complete, archive, and download."
+    },
+    {
+        "name": "Account",
+        "route": "account",
+        "description": "View account info (name, logo, id), manage users, admins can edit info and generate invite links."
+    },
+    {
+        "name": "Accept Account Invite",
+        "route": "accept-account-invite/[inviteCode]",
+        "description": "Accept or decline an account invite; prompts sign-in if the user is not authenticated."
+    },
+    {
+        "name": "Profile",
+        "route": "profile",
+        "description": "Private user profile: view info, edit (except email), and switch between joined accounts."
+    },
+    {
+        "name": "Public Profile",
+        "route": "profile/[userId]",
+        "description": "Public-facing profile within the account; admins can view/change the user’s role (not their own)."
+    }
+]
+
+
+
+> user

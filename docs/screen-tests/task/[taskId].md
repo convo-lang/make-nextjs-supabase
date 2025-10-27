@@ -1,0 +1,20 @@
+- Verify the task title is visible and editable in place.
+- Change the title and confirm it saves and persists after a browser refresh.
+- Confirm task status badge shows Active by default (or current status).
+- Type markdown in the editor (e.g., a header and bold text) and confirm formatting appears correctly in Preview.
+- Toggle between Edit and Preview modes and ensure content stays in sync.
+- Resize to a wide viewport and confirm side-by-side editor/preview layout appears.
+- Resize to a narrow viewport and confirm Edit and Preview tabs appear with correct switching.
+- Enter distraction-free full-screen mode and confirm the editor expands and UI chrome is minimized.
+- Exit full-screen mode and confirm the normal layout is restored.
+- Click Mark complete and confirm status updates to Completed and primary CTA styling is applied sparingly.
+- After completion, confirm the complete action is disabled or replaced by a non-actionable Completed state.
+- Click Archive and confirm status updates to Archived and archive action is disabled or hidden appropriately.
+- Click Download as .md and confirm a .md file is downloaded with the task title in the filename.
+- Open the downloaded file and confirm the title and markdown content match the on-screen content.
+- Click Copy link and confirm a success toast appears and the permalink is in the clipboard (paste to verify).
+- Verify metadata shows created/updated timestamps and owner name.
+- Click the owner link to their public profile and confirm navigation to profile/[userId].
+- If a last editor is shown, click their link and confirm navigation to their public profile.
+- Verify the share section uses subtle highlighting (thin border) and brand color is not overused.
+- Confirm all actions are available to a signed-in user and the page blocks or redirects appropriately if signed out.

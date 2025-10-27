@@ -1,0 +1,324 @@
+> define
+__makeRoot="../../.."
+__makeFile="make.convo"
+__makeOut="docs/screen-tests/profile.md"
+__model="gpt-5"
+
+> system
+You are generating content that will be directly written to "docs/screen-tests/profile.md".
+DO NOT include a preamble or postamble.
+
+Always respond with the full content for "docs/screen-tests/profile.md", even if you are making an
+small or incremental update.
+
+> appendUser
+<app-description>
+## Task Bee
+
+A minimal, light-hearted task manager for companies. Task Bee helps teams capture, organize, complete, and archive tasks, with rich markdown details and simple sharing.
+
+### Overview
+Task Bee enables signed-in users to manage their organization’s tasks in a multi-tenant setup. Tasks can include detailed markdown content with edit and preview modes, can be marked complete, archived, and exported as a markdown file. Account admins can manage account details and user roles, while all signed-in users gain access to dashboards and task detail pages.
+
+## Features
+
+- Task management
+  - Add tasks
+  - Remove tasks
+  - Mark tasks as completed
+  - Archive tasks
+  - Download tasks as a markdown file
+  - Store detailed task information in markdown format
+    - Includes both edit and preview modes
+  - Share a link to a task detail page
+
+- Account and access
+  - Multi-tenant accounts with role-based visibility and permissions
+  - Invite users to an account via an invite link
+  - View account info, logo, and ID
+  - Admins can edit account info and manage member roles
+  - View user profiles (self and public view)
+  - Switch between accounts
+
+## User Roles
+
+- guest
+  - A user not signed in
+- default
+  - Default role for a signed-in user belonging to an account
+- manager
+  - An account manager with elevated capabilities
+- admin
+  - A super admin that can manage any account and its users
+
+## Screens
+
+### Landing page
+- Route: /
+- Seen by roles: all
+- Description: A marketing page for Task Bee with a large, eye-catching full-screen hero carousel highlighting the app’s top value propositions.
+
+### Register
+- Route: /register
+- Seen by roles: all
+- Description: Register a new user and create an organizational account. If already signed in, a message indicates the user is already registered.
+- Inputs:
+  - name
+  - email
+  - Organization name
+  - password
+
+### Sign-in
+- Route: /sign-in
+- Seen by roles: all
+- Description: Sign in as an existing user. If already signed in, a message indicates the user is already signed in.
+- Inputs:
+  - email
+  - password
+
+### Dashboard
+- Route: /dashboard
+- Seen by roles: all signed-in users
+- Description: The central place for managing tasks for the current company/account.
+- Capabilities:
+  - Add, remove tasks
+  - Mark tasks as completed
+  - Archive tasks
+  - Download tasks as markdown
+
+### Task Detail
+- Route: /task/[task-id]
+- Seen by roles: all signed-in users
+- Description: A dedicated page to manage and view a single task.
+- Capabilities:
+  - View and edit task details in markdown
+    - Toggle between edit and preview modes
+  - Mark as completed
+  - Archive task
+  - Download this task as markdown
+  - Share a link to this task
+
+### Account
+- Route: /account
+- Seen by roles: all signed-in users
+- Description: Shows account information and membership.
+- Details:
+  - Displays:
+    - name
+    - logo
+    - id (muted)
+  - Admin-only:
+    - Edit account info
+    - Invite users via invite link:
+      - https://${location.host}/accept-account-invite/${inviteCode}
+  - Users section:
+    - Grid of user cards (name + profile picture), linking to each user’s public profile
+  - Link to create a new account
+
+### Accept Account Invite
+- Route: /accept-account-invite/[invite-code]
+- Seen by roles: all
+- Description: Accept or decline an invite to join an account. If not signed in, users are prompted to sign in first.
+
+### Profile
+- Route: /profile
+- Seen by roles: all signed-in users
+- Description: The private profile page for the current user.
+- Capabilities:
+  - View personal info
+  - View all accounts the user belongs to, with option to switch accounts
+  - Edit profile fields, except email address (not editable)
+
+### Public Profile
+- Route: /profile/[user-id]
+- Seen by roles: all signed-in users
+- Description: Public-facing profile page as seen by other users within the account context.
+- Admin functionality:
+  - Admins can see the user’s role
+  - Admins can change the user’s role
+  - Admins cannot change their own role
+
+## Task Model and Behaviors
+
+- A task contains:
+  - Title and status (active, completed, archived)
+  - Detailed description in markdown
+  - Metadata related to its account
+- Actions:
+  - Edit details in markdown with a live preview mode
+  - Mark complete for workflow visibility
+  - Archive to keep the dashboard focused while retaining historical context
+  - Export/download as a markdown file for offline sharing or documentation
+  - Share link to the task detail page with teammates
+
+## Styling
+
+- Framework: Tailwind CSS
+- Look and feel:
+  - Minimalistic
+  - Light-hearted
+  - Good use of negative space
+  - Gradient backgrounds
+  - Rounded corners and surfaces
+- Custom color palette:
+  - CSS variables:
+    - --light-blue: #a8d5e2ff
+    - --orange-web: #f9a620ff (Brand color)
+    - --mustard: #ffd449ff
+    - --forest-green: #548c2fff (Secondary)
+    - --pakistan-green: #104911ff
+- Brand usage rules:
+  - Use the brand color (#f9a620ff) sparingly
+  - Reserve the brand color primarily for the most important CTAs or as a subtle thin border for highlights when not a main CTA
+
+## Summary
+
+Task Bee streamlines task tracking for companies with a clear, role-aware experience. Users can collaborate on tasks, enrich them with markdown detail, and maintain clean dashboards by completing and archiving items. Admins manage their accounts and memberships, while a thoughtful, minimal visual style ensures focus and clarity.
+</app-description>
+
+> appendUser
+<all-screens>
+[
+    {
+        "name": "Landing page",
+        "route": "index",
+        "description": "Marketing home with a full-screen hero carousel highlighting Task Bee’s top value propositions."
+    },
+    {
+        "name": "Register",
+        "route": "register",
+        "description": "Register a new user and create an organization; shows a notice if already signed in."
+    },
+    {
+        "name": "Sign-in",
+        "route": "sign-in",
+        "description": "Sign in to an existing account; shows a notice if already signed in."
+    },
+    {
+        "name": "Dashboard",
+        "route": "dashboard",
+        "description": "Manage company tasks: add, remove, complete, archive, and download as markdown."
+    },
+    {
+        "name": "Task Detail",
+        "route": "task/[taskId]",
+        "description": "View and edit a single task in markdown, toggle preview, complete, archive, and download."
+    },
+    {
+        "name": "Account",
+        "route": "account",
+        "description": "View account info (name, logo, id), manage users, admins can edit info and generate invite links."
+    },
+    {
+        "name": "Accept Account Invite",
+        "route": "accept-account-invite/[inviteCode]",
+        "description": "Accept or decline an account invite; prompts sign-in if the user is not authenticated."
+    },
+    {
+        "name": "Profile",
+        "route": "profile",
+        "description": "Private user profile: view info, edit (except email), and switch between joined accounts."
+    },
+    {
+        "name": "Public Profile",
+        "route": "profile/[userId]",
+        "description": "Public-facing profile within the account; admins can view/change the user’s role (not their own)."
+    }
+]
+</all-screens>
+
+> appendUser
+<screen-description>
+# Screen Description
+
+Name: Profile
+Route: /profile
+
+## Description
+The private Profile page lets a signed-in user view and manage their personal details and workspace memberships. It emphasizes a simple, stacked layout with generous spacing and cards. The user can update their display name, change profile and hero images, and quickly switch between accounts they belong to. Email is visible but not editable.
+
+The header presents the user’s avatar, name, and a read-only email. A profile editor card provides fields for name and image controls. A memberships section lists all accounts the user belongs to with role badges; each account entry includes a quick Switch action to set the active account without leaving the page.
+
+Uploads for profile and hero images follow the storage path convention in the accounts bucket:
+- {account_id}/users/{user_id}/profile.jpg (or equivalent)
+- {account_id}/users/{user_id}/hero.jpg (or equivalent)
+
+Removing an image clears the corresponding path in the user record. The page uses minimal brand highlights, reserving the brand color for only the most important action (e.g., Save changes).
+
+Empty states:
+- No profile image: show a neutral avatar placeholder.
+- No hero image: show a soft surface frame.
+- No memberships: show a short note with guidance to join or create an account (linking to Account is available via main nav, not within this screen’s links).
+
+Accessibility:
+- Image buttons include aria-labels (Upload avatar, Remove avatar, Upload banner).
+- Email is read-only and clearly labeled.
+- Role badges include text alternatives.
+
+## Actions
+- Edit profile
+  - Change display name (required)
+  - View email (read-only, non-editable)
+  - Upload/replace profile image (avatar)
+  - Remove profile image
+  - Upload/replace hero image (banner)
+  - Remove hero image
+  - Save changes
+  - Cancel edits
+- Account memberships
+  - View all accounts the user belongs to (name + role badge)
+  - Switch active account directly from the list
+  - Copy account name or ID (optional utility action on each row)
+- Public presence
+  - Copy link to public profile
+  - Open public profile in a new tab
+
+Validation and behavior notes:
+- Name is required; show inline error for empty or whitespace-only values.
+- Email is read-only and cannot be edited.
+- File uploads store only the storage path in the database; full URLs are resolved client-side.
+- Switch account calls the app controller and updates the active workspace without leaving the page context.
+
+## Links
+- profile/[user-id]: Open the public view of the current user’s profile
+</screen-description>
+
+> appendUser
+Generate a simple set of tests to test all the features of the screens. The tests should be 
+    should be a smile bullet list of short sentences describing features to test.
+
+    The test should be able to be completed by a human in 10 minutes or less. Do not include more
+    than 25 bullet points.
+
+> nop
+//_END_MAKE_TARGET_INPUT_
+
+
+@time 2025-10-27T06:48:19-04:00
+@tokenUsage 2356 / 1287 / $0.0045537500000000005
+@model gpt-5-2025-08-07
+> assistant
+- Load /profile as a signed-in user; see avatar (or placeholder), display name, and a clearly labeled read-only email.
+- If no avatar exists, confirm a neutral avatar placeholder shows.
+- If no hero image exists, confirm a soft surface frame shows.
+- Attempt to edit the name; clear it to empty, try Save, and see an inline required error.
+- Enter a name with only spaces, try Save, and see the inline required error.
+- Enter a valid new display name and click Save; changes persist after refresh.
+- Click Cancel after changing the name; confirm original name is restored and no changes persist.
+- Upload/replace the profile avatar; preview updates immediately, then Save to persist.
+- Remove the profile avatar; placeholder returns, then Save to persist removal.
+- Upload/replace the hero image; banner updates immediately, then Save to persist.
+- Remove the hero image; soft frame returns, then Save to persist removal.
+- Confirm image action buttons have accessible labels (Upload avatar, Remove avatar, Upload banner).
+- Verify the email field cannot be focused or edited and is labeled read-only.
+- In memberships, see all accounts with names and role badges for each.
+- Inspect a role badge to confirm it includes accessible text (e.g., via tooltip or screen reader text).
+- Click Switch on an account; active workspace updates without a full page change (e.g., header/context reflects the new account).
+- Use Copy account name (or ID) on a row; paste to verify correct value is copied.
+- Click “Open public profile” to open profile/[user-id] in a new tab; page loads and shows public view.
+- Use “Copy link to public profile”; paste to verify the URL is correct.
+- After an image upload, verify the user record stores only a storage path (not a full URL) if visible in UI/dev tools.
+
+
+
+> user

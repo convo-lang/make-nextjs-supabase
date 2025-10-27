@@ -1,0 +1,20 @@
+- Confirm guests are redirected or prompted to sign in when visiting /dashboard.
+- Verify the dashboard shows tasks only for the current account after sign-in.
+- Check the “New Task” primary CTA is visible and uses the brand color sparingly.
+- Create a new task and see it appear in the Active list with title and excerpt.
+- Open a task by clicking its card to navigate to /task/[task-id].
+- Mark a task as completed from the card and see its status badge change.
+- Switch to the Completed filter and verify the completed task appears there.
+- Archive a task from the card and verify it disappears from Active.
+- Switch to the Archived filter and confirm the archived task is listed.
+- Remove a task and confirm it disappears from all filters.
+- Download a task as a .md file and verify the file name and markdown content.
+- Use the search input to filter by a keyword in the task title.
+- Use the search input to filter by a keyword found in the task description text.
+- Clear search and confirm the full filtered list returns.
+- Toggle status filters (Active, Completed, Archived) and verify counts update.
+- Change sort between “Last updated” and “Created” and see item order change.
+- Verify quick actions (Complete, Archive, Remove, Download) are visible on each card.
+- Confirm each card shows a title, concise status badge, and short description excerpt.
+- Check empty state messaging for each filter and that “New Task” is offered.
+- Switch accounts and verify the dashboard updates to that account’s tasks only.

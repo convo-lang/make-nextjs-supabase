@@ -1,1 +1,316 @@
-/* placeholder */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap");
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* CSS Variables - Brand Palette */
+:root{
+    --light-blue:#a8d5e2ff;
+    --orange-web:#f9a620ff; /* Brand */
+    --mustard:#ffd449ff;
+    --forest-green:#548c2fff; /* Secondary */
+    --pakistan-green:#104911ff;
+}
+
+/* Tailwind v4 Theme Tokens */
+@theme {
+    --font-sans:"Inter",ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,"Noto Sans","Apple Color Emoji","Segoe UI Emoji";
+    --font-nunito:"Nunito",var(--font-sans);
+
+    --color-brand:var(--orange-web);
+    --color-secondary:var(--forest-green);
+    --color-accent:var(--mustard);
+    --color-info:var(--light-blue);
+
+    --color-bg:#f8fafc;
+    --color-surface:#ffffff;
+    --color-fg:#0b1220;
+    --color-muted:#6b7280;
+
+    --radius-xs:6px;
+    --radius-sm:10px;
+    --radius:12px;
+    --radius-lg:16px;
+    --radius-xl:22px;
+
+    --shadow-soft:0 1px 2px rgba(16,17,19,.04), 0 6px 22px rgba(16,17,19,.06);
+    --shadow-pop:0 10px 30px rgba(16,17,19,.12);
+}
+
+/* Base resets and globals */
+html,body,#__next{height:100%;}
+html{scroll-behavior:smooth;}
+body{
+    font-family:var(--font-sans);
+    color:var(--color-fg);
+    background:
+        radial-gradient(1200px 600px at 10% -10%, color(display-p3 0.98 0.98 0.98 / .9), transparent 60%),
+        radial-gradient(900px 480px at 110% -20%, color(display-p3 0.89 0.97 0.98 / .7), transparent 50%),
+        linear-gradient(to bottom, #ffffff, #f9fbfd 60%, #f1f8fb);
+    background-color:var(--color-bg);
+}
+::selection{
+    background:color-mix(in oklab, var(--orange-web) 22%, white);
+    color:#0b1220;
+}
+
+/* Typography tweaks */
+h1,h2,h3,h4{
+    font-family:var(--font-nunito);
+    letter-spacing:-0.01em;
+}
+h1,h2{text-wrap:balance;}
+p,li{text-wrap:pretty;}
+
+/* Scrollbar - light touch */
+*{
+    scrollbar-color: color-mix(in oklab, var(--forest-green) 18%, #e6eaf0) transparent;
+    scrollbar-width: thin;
+}
+
+/* === Utilities (Tailwind v4 @utility) === */
+
+/* Layout containers */
+@utility app-container{
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+}
+@utility page-stack{
+    @apply flex flex-col gap-6;
+}
+@utility section-pad{
+    @apply py-6 md:py-10;
+}
+@utility full-bleed{
+    @apply w-full mx-auto max-w-none;
+}
+
+/* Surfaces and cards */
+@utility surface{
+    @apply rounded-2xl bg-white/80 backdrop-blur border border-black/5 shadow-sm;
+}
+@utility surface-gradient{
+    @apply bg-gradient-to-b from-white/90 to-white/70;
+}
+@utility card{
+    @apply surface p-4 md:p-6;
+}
+
+/* Subtle brand highlight (thin border only) */
+@utility brand-border-thin{
+    @apply border;
+    border-color:color-mix(in oklab, var(--orange-web) 38%, #e5e7eb);
+}
+
+/* Buttons */
+@utility btn-base{
+    @apply inline-flex items-center justify-center gap-2 select-none rounded-xl px-3.5 py-2.5 text-sm font-medium tracking-tight transition;
+    @apply border border-zinc-200 bg-white/80 shadow-sm;
+}
+@utility btn-primary-base{
+    @apply text-white;
+    background: linear-gradient(180deg, color-mix(in oklab, var(--orange-web) 96%, white) 0%, var(--orange-web) 60%, color-mix(in oklab, var(--orange-web) 86%, black) 100%);
+    box-shadow: var(--shadow-soft);
+}
+@utility btn-secondary-base{
+    @apply text-zinc-900 bg-white border-zinc-200;
+}
+@utility btn-ghost-base{
+    @apply bg-transparent border-transparent text-zinc-800;
+}
+
+/* Inputs */
+@utility input-base{
+    @apply w-full rounded-xl border border-zinc-200 bg-white/80 px-3.5 py-2.5 text-sm text-zinc-900 shadow-sm outline-none transition;
+}
+@utility input-focus-ring{
+    @apply ring-4 ring-[color:var(--orange-web)]/15 border-[color:var(--orange-web)]/60;
+}
+@utility input-invalid{
+    @apply border-red-400 ring-2 ring-red-200;
+}
+@utility input-placeholder{
+    @apply text-zinc-400;
+}
+
+/* Badges / chips */
+@utility badge-base{
+    @apply inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-medium;
+}
+@utility badge-muted{
+    @apply badge-base border-zinc-200 bg-zinc-50 text-zinc-700;
+}
+@utility badge-success{
+    @apply badge-base;
+    color: #0f5132;
+    background: color-mix(in oklab, var(--forest-green) 12%, white);
+    border-color: color-mix(in oklab, var(--forest-green) 18%, white);
+}
+
+/* Avatars */
+@utility avatar{
+    @apply inline-flex items-center justify-center rounded-full bg-zinc-100 text-zinc-500;
+}
+
+/* App background options */
+@utility bg-app{
+    @apply bg-gradient-to-b from-white via-[#fdfaf5] to-[#f1f9fb];
+}
+@utility bg-surface-soft{
+    background:
+        linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.8)),
+        radial-gradient(600px 200px at 0% -10%, color(display-p3 0.98 0.92 0.86 / .4), transparent 60%);
+}
+
+/* Links */
+@utility link{
+    @apply underline-offset-4 decoration-1 transition;
+    color: var(--forest-green);
+}
+
+/* KBD */
+@utility kbd-base{
+    @apply rounded-md border border-zinc-200 bg-white px-1.5 py-0.5 text-[11px] font-semibold text-zinc-700 shadow-sm;
+}
+
+/* Divider */
+@utility divider{
+    @apply h-px w-full bg-gradient-to-r from-transparent via-zinc-200 to-transparent;
+}
+
+/* CTA ring highlight (non-CTA elements) */
+@utility brand-ring{
+    @apply ring-2 ring-[color:var(--orange-web)]/40;
+}
+
+/* === Components === */
+@layer components{
+    /* Buttons */
+    .btn{ @apply btn-base; }
+    .btn:hover{ @apply bg-white; }
+    .btn:active{ @apply scale-[0.995]; }
+    .btn:focus-visible{ @apply outline-none ring-4 ring-[color:var(--orange-web)]/20; }
+
+    .btn-primary{ @apply btn-base btn-primary-base; }
+    .btn-primary:hover{
+        filter: brightness(0.98);
+        box-shadow: var(--shadow-pop);
+    }
+    .btn-primary:active{ @apply scale-[0.992]; }
+
+    .btn-secondary{ @apply btn-secondary-base; }
+    .btn-secondary:hover{ @apply bg-zinc-50; }
+
+    .btn-ghost{ @apply btn-ghost-base; }
+    .btn-ghost:hover{ @apply bg-zinc-50 border-zinc-200; }
+
+    .btn-icon{
+        @apply inline-flex items-center justify-center rounded-xl border border-zinc-200 bg-white/80 p-2 shadow-sm transition;
+    }
+    .btn-icon:hover{ @apply bg-white; }
+
+    .btn-disabled,
+    .btn:disabled{
+        @apply opacity-60 pointer-events-none;
+    }
+
+    /* Inputs */
+    .input{ @apply input-base; }
+    .input:focus{ @apply input-focus-ring; }
+    .input[aria-invalid="true"], .input.invalid{ @apply input-invalid; }
+    .input::placeholder{ @apply input-placeholder; }
+
+    .textarea{ @apply input-base align-top; }
+    .textarea:focus{ @apply input-focus-ring; }
+    .textarea::placeholder{ @apply input-placeholder; }
+
+    .select{
+        @apply input-base appearance-none bg-[url("data:image/svg+xml,%3Csvg_width='12'_height='8'_viewBox='0_0_12_8'_xmlns='http://www.w3.org/2000/svg'%3E%3Cpath_d='M1_1.5L6_6.5L11_1.5'_stroke='%236b7280'_stroke-width='1.5'_stroke-linecap='round'_stroke-linejoin='round'/%3E%3C/svg%3E")] bg-[length:12px_8px] bg-[right_0.8rem_center] bg-no-repeat pr-9;
+    }
+    .select:focus{ @apply input-focus-ring; }
+
+    /* Cards / Surfaces */
+    .card{ @apply card; }
+    .card--hover{
+        @apply card transition;
+    }
+    .card--hover:hover{
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-pop);
+        @apply surface-gradient;
+    }
+
+    /* Link */
+    .link{
+        @apply link;
+    }
+    .link:hover{
+        color: color-mix(in oklab, var(--forest-green) 86%, black);
+        text-decoration: underline;
+    }
+    .link--muted{
+        @apply text-zinc-600;
+    }
+    .link--brand{
+        color: var(--orange-web);
+    }
+
+    /* Badge */
+    .badge{ @apply badge-muted; }
+    .badge--success{ @apply badge-success; }
+
+    /* KBD */
+    kbd{ @apply kbd-base; }
+
+    /* Divider */
+    .divider{ @apply divider; }
+
+    /* Page shell helpers */
+    .page-container{ @apply app-container page-stack section-pad; }
+    .page--no-margins .page-container{ @apply px-0 py-0; }
+    .page--full{ @apply min-h-[calc(100vh-4rem)] flex flex-col; }
+
+    /* Prose for Markdown content */
+    .markdown{
+        @apply prose prose-zinc max-w-none;
+    }
+    .markdown :is(h1,h2,h3){
+        font-family: var(--font-nunito);
+    }
+    .markdown a{
+        color: var(--forest-green);
+        text-decoration-thickness: 1px;
+        text-underline-offset: 4px;
+    }
+    .markdown a:hover{
+        color: color-mix(in oklab, var(--forest-green) 86%, black);
+        text-decoration: underline;
+    }
+    .markdown code{
+        @apply rounded-md bg-zinc-100 px-1.5 py-0.5 text-[0.9em] font-medium;
+    }
+    .markdown pre code{
+        @apply bg-transparent p-0;
+    }
+    .markdown pre{
+        @apply rounded-xl border border-zinc-200 bg-zinc-50 p-4 shadow-sm;
+    }
+    .markdown blockquote{
+        @apply border-l-4 border-[color:var(--forest-green)]/30 bg-[color:var(--forest-green)]/3 px-4 py-2 italic;
+    }
+
+    /* Subtle highlight frame using brand (non-primary) */
+    .brand-frame{
+        @apply rounded-xl bg-white/80 shadow-sm;
+        border:1px solid color-mix(in oklab, var(--orange-web) 40%, #e5e7eb);
+    }
+}
+
+/* Print-friendly markdown export */
+@media print{
+    body{
+        background:#fff !important;
+    }
+    .no-print{ display:none !important; }
+    .markdown{
+        /* @apply prose prose-zinc max-w-none; */
+    }
+}

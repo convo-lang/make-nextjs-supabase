@@ -1,0 +1,16 @@
+- See a loading state while the invite code is being verified.
+- When signed out, a valid invite shows a sign-in gate; sign in and confirm you auto-return to the same invite page.
+- For a valid invite (signed in), verify account name/logo (or fallback), role to be granted, and inviter details are shown.
+- Click the inviter’s name/avatar and confirm it opens their public profile; navigate back.
+- Click “Copy invite link” and verify the full URL is in your clipboard.
+- Paste the copied link in a new tab and confirm it opens the same invite state.
+- Click “Accept invite” and confirm membership is created/updated and a success message appears.
+- After acceptance, verify the app switches to the target account (account selector/header reflects the new account).
+- From the success state, proceed directly to the dashboard without needing to sign in again.
+- If you already belong to the account, confirm a message appears and “Switch to this account” changes context immediately.
+- With an invite targeting a specific email, sign in with a different email; see a non-blocking warning, proceed, and accept successfully.
+- Click “Decline” and confirm it uses low-emphasis styling and navigates away without joining the account.
+- Open an expired or revoked invite and confirm a clear explanation; the Accept button is disabled/hidden with guidance to request a new invite.
+- Open an invalid/malformed code and confirm similar “can’t be used” messaging.
+- Simulate a transient load error and use “Retry” to successfully load the invite details.
+- Verify the primary CTA (Accept invite) uses the brand color (#f9a620), and secondary actions are not brand-colored.

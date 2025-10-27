@@ -1,0 +1,18 @@
+- Sign in as a default user and open /account; see header with logo/avatar, account name, and a muted-looking account ID.
+- Confirm the account ID is readable and visually de-emphasized compared to the name.
+- Verify members grid renders with user cards showing avatar and name.
+- Click a member card; it opens /profile/[userId] in the same tab and shows the public profile.
+- Confirm default users do not see Edit or Invite actions on the Account page.
+- Verify a secondary option to “Create a new account” is visible and not styled as a primary CTA.
+- Click “Create a new account”; it routes to the registration flow (e.g., /register).
+- Sign in as an admin and open /account; Edit and Invite actions are visible.
+- Click Edit; change the account name (and logo if supported), save, and see the header update immediately.
+- Click Invite; an invite link is generated and displayed.
+- Confirm the invite link format matches https://{location.host}/accept-account-invite/{inviteCode}.
+- Use the copy control (if present) to copy the invite link; paste to verify it matches exactly.
+- Open the invite link in a new tab; the Accept Account Invite screen appears.
+- From the members grid, open a member’s public profile as an admin; change their role and confirm it updates.
+- On your own public profile (as admin), confirm role change controls are not available.
+- Verify the Invite button uses the brand color #f9a620ff and other non-primary actions do not.
+- Confirm page layout feels minimal with generous negative space and rounded card surfaces (visual sanity check).
+- If the account has few/no members, verify the empty state prompts inviting teammates and shows the Invite CTA.

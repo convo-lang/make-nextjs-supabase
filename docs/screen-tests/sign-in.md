@@ -1,0 +1,22 @@
+- Open /sign-in as a guest; centered logo and welcome copy are visible.
+- Email and password inputs exist and have associated labels.
+- Password input masks characters.
+- A low-emphasis “Create an account” link is visible.
+- The “Sign in” CTA uses the brand color and is not fixed-width.
+- Click Sign in with both fields empty; inline errors appear for both fields.
+- Inputs with errors have aria-invalid=true.
+- Enter an invalid email format with any password; email shows a format error.
+- Correct inputs clear inline errors and remove aria-invalid.
+- Tab order is Email -> Password -> Sign in -> Create an account; CTA shows a brand-tinted focus ring.
+- Press Enter in the Password field submits the form.
+- Submit valid credentials; button disables and shows “Signing in…” until complete; no double-submit.
+- Submit with a wrong password; an inline auth error appears and field values remain.
+- Sign in successfully with no prior route; you land on /dashboard.
+- Start from a protected /task/[taskId] while logged out; after sign-in you return to that task page.
+- Start from /accept-account-invite/[inviteCode] while logged out; after sign-in you return to the invite acceptance screen.
+- While signed in, visit /sign-in; the form is replaced by a friendly notice with actions.
+- From the notice, use “Go to Dashboard” to reach /dashboard.
+- From the notice, use “Sign out” and confirm the sign-in form reappears.
+- Click “Create an account”; you navigate to /register.
+- If any icon-only control is present, it has an aria-label (otherwise note none present).
+- Brand accents beyond the primary CTA are limited to thin borders or focus rings.

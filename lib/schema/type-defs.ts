@@ -1,0 +1,566 @@
+import type { Account, Account_insert, AccountInvite, AccountInvite_insert, AccountMembership, AccountMembership_insert, Task, Task_insert, User, User_insert } from "./types-ts";
+import { AccountSchema, Account_insertSchema, AccountInviteSchema, AccountInvite_insertSchema, AccountMembershipSchema, AccountMembership_insertSchema, TaskSchema, Task_insertSchema, UserSchema, User_insertSchema } from "./types-zod";
+import type { ZodType } from "zod";
+
+export interface TypeMapping
+{
+    name:string;
+    ts?:string;
+    zod?:string;
+    convo?:string;
+    sql?:string;
+}
+
+export interface PropDef
+{
+    name:string;
+    type:TypeMapping;
+    primary?:boolean;
+    description?:string;
+    sqlDef?:string;
+    optional?:boolean;
+    hasDefault?:boolean;
+    isArray?:boolean;
+    arrayDimensions?:number;
+}
+
+export interface TypeDef<
+    TValue extends Record<string,any>=Record<string,any>,
+    TInsert extends Record<string,any>=Record<string,any>
+>{
+
+
+    name:string;
+    description?:string;
+    type:'type'|'enum';
+    primaryKey:(keyof TValue) & (keyof TInsert);
+    sqlTable?:string;
+    sqlSchema?:string;
+    zodSchema?:ZodType;
+    zodInsertSchema?:ZodType;
+    props:PropDef[];
+}
+
+export const typeDefs={
+    Account: {
+        name: "Account",
+        description: "An account/organization (tenant)",
+        primaryKey: "id",
+        sqlSchema: "public",
+        sqlTable: "account",
+        type: "type",
+        props: [
+            {
+                name: "created_at",
+                description: "Date and time the account was created",
+                hasDefault: true,
+                sqlDef: "created_at timestamptz not null default now()",
+                type: {
+                    name: "string",
+                    sql: "timestamptz",
+                    ts: "string"
+                }
+            },
+            {
+                name: "hero_image_path",
+                description: "Path to the account hero image in the 'accounts' storage bucket",
+                optional: true,
+                sqlDef: "hero_image_path text",
+                type: {
+                    name: "string",
+                    sql: "text",
+                    ts: "string"
+                }
+            },
+            {
+                name: "id",
+                description: "Unique id of the account",
+                hasDefault: true,
+                primary: true,
+                sqlDef: "id uuid not null default gen_random_uuid()",
+                type: {
+                    name: "string",
+                    sql: "uuid",
+                    ts: "string"
+                }
+            },
+            {
+                name: "logo_image_path",
+                description: "Path to the account logo image in the 'accounts' storage bucket",
+                optional: true,
+                sqlDef: "logo_image_path text",
+                type: {
+                    name: "string",
+                    sql: "text",
+                    ts: "string"
+                }
+            },
+            {
+                name: "name",
+                description: "Display name of the account",
+                sqlDef: "name text not null",
+                type: {
+                    name: "string",
+                    sql: "text",
+                    ts: "string"
+                }
+            },
+            {
+                name: "updated_at",
+                description: "Date and time the account was last updated",
+                hasDefault: true,
+                sqlDef: "updated_at timestamptz not null default now()",
+                type: {
+                    name: "string",
+                    sql: "timestamptz",
+                    ts: "string"
+                }
+            }
+        ],
+        zodSchema: AccountSchema,
+        zodInsertSchema: Account_insertSchema,
+    } as TypeDef<Account,Account_insert> satisfies TypeDef<Account,Account_insert>,
+
+    AccountInvite: {
+        name: "AccountInvite",
+        description: "An invitation to join an account via invite link",
+        primaryKey: "id",
+        sqlSchema: "public",
+        sqlTable: "account_invite",
+        type: "type",
+        props: [
+            {
+                name: "accepted_at",
+                description: "When the invite was accepted",
+                optional: true,
+                sqlDef: "accepted_at timestamptz",
+                type: {
+                    name: "string",
+                    sql: "timestamptz",
+                    ts: "string"
+                }
+            },
+            {
+                name: "accepted_by_user_id",
+                description: "The user who accepted the invite",
+                optional: true,
+                sqlDef: "accepted_by_user_id uuid",
+                type: {
+                    name: "string",
+                    sql: "uuid",
+                    ts: "string"
+                }
+            },
+            {
+                name: "account_id",
+                description: "The account this invite grants access to",
+                sqlDef: "account_id uuid not null",
+                type: {
+                    name: "string",
+                    sql: "uuid",
+                    ts: "string"
+                }
+            },
+            {
+                name: "code",
+                description: "The invite code to be used in the accept link",
+                sqlDef: "code text not null",
+                type: {
+                    name: "string",
+                    sql: "text",
+                    ts: "string"
+                }
+            },
+            {
+                name: "created_at",
+                description: "Date and time the invite was created",
+                hasDefault: true,
+                sqlDef: "created_at timestamptz not null default now()",
+                type: {
+                    name: "string",
+                    sql: "timestamptz",
+                    ts: "string"
+                }
+            },
+            {
+                name: "email",
+                description: "Optional email the invite was intended for",
+                optional: true,
+                sqlDef: "email text",
+                type: {
+                    name: "string",
+                    sql: "text",
+                    ts: "string"
+                }
+            },
+            {
+                name: "expires_at",
+                description: "When the invite expires (if set)",
+                optional: true,
+                sqlDef: "expires_at timestamptz",
+                type: {
+                    name: "string",
+                    sql: "timestamptz",
+                    ts: "string"
+                }
+            },
+            {
+                name: "id",
+                description: "Unique id of the account invite",
+                hasDefault: true,
+                primary: true,
+                sqlDef: "id uuid not null default gen_random_uuid()",
+                type: {
+                    name: "string",
+                    sql: "uuid",
+                    ts: "string"
+                }
+            },
+            {
+                name: "invited_by_user_id",
+                description: "The user who created/sent the invite",
+                optional: true,
+                sqlDef: "invited_by_user_id uuid",
+                type: {
+                    name: "string",
+                    sql: "uuid",
+                    ts: "string"
+                }
+            },
+            {
+                name: "revoked_at",
+                description: "When the invite was revoked (if revoked)",
+                optional: true,
+                sqlDef: "revoked_at timestamptz",
+                type: {
+                    name: "string",
+                    sql: "timestamptz",
+                    ts: "string"
+                }
+            },
+            {
+                name: "role",
+                description: "The role the invite grants upon acceptance",
+                hasDefault: true,
+                sqlDef: "role public.user_role not null default 'default'",
+                type: {
+                    name: "string",
+                    sql: "public",
+                    ts: "string"
+                }
+            }
+        ],
+        zodSchema: AccountInviteSchema,
+        zodInsertSchema: AccountInvite_insertSchema,
+    } as TypeDef<AccountInvite,AccountInvite_insert> satisfies TypeDef<AccountInvite,AccountInvite_insert>,
+
+    AccountMembership: {
+        name: "AccountMembership",
+        description: "Links a user to an account with a role",
+        primaryKey: "id",
+        sqlSchema: "public",
+        sqlTable: "account_membership",
+        type: "type",
+        props: [
+            {
+                name: "account_id",
+                description: "The account this membership belongs to",
+                sqlDef: "account_id uuid not null",
+                type: {
+                    name: "string",
+                    sql: "uuid",
+                    ts: "string"
+                }
+            },
+            {
+                name: "created_at",
+                description: "Date and time the membership was created",
+                hasDefault: true,
+                sqlDef: "created_at timestamptz not null default now()",
+                type: {
+                    name: "string",
+                    sql: "timestamptz",
+                    ts: "string"
+                }
+            },
+            {
+                name: "id",
+                description: "Unique id of the account membership",
+                hasDefault: true,
+                primary: true,
+                sqlDef: "id uuid not null default gen_random_uuid()",
+                type: {
+                    name: "string",
+                    sql: "uuid",
+                    ts: "string"
+                }
+            },
+            {
+                name: "last_accessed_at",
+                description: "Date and time the member last accessed the account",
+                hasDefault: true,
+                sqlDef: "last_accessed_at timestamptz not null default now()",
+                type: {
+                    name: "string",
+                    sql: "timestamptz",
+                    ts: "string"
+                }
+            },
+            {
+                name: "role",
+                description: "The role of the user within the account",
+                hasDefault: true,
+                sqlDef: "role public.user_role not null default 'default'",
+                type: {
+                    name: "string",
+                    sql: "public",
+                    ts: "string"
+                }
+            },
+            {
+                name: "user_id",
+                description: "The user this membership belongs to",
+                sqlDef: "user_id uuid not null",
+                type: {
+                    name: "string",
+                    sql: "uuid",
+                    ts: "string"
+                }
+            }
+        ],
+        zodSchema: AccountMembershipSchema,
+        zodInsertSchema: AccountMembership_insertSchema,
+    } as TypeDef<AccountMembership,AccountMembership_insert> satisfies TypeDef<AccountMembership,AccountMembership_insert>,
+
+    Task: {
+        name: "Task",
+        description: "A task belonging to an account",
+        primaryKey: "id",
+        sqlSchema: "public",
+        sqlTable: "task",
+        type: "type",
+        props: [
+            {
+                name: "account_id",
+                description: "The account this task belongs to",
+                sqlDef: "account_id uuid not null",
+                type: {
+                    name: "string",
+                    sql: "uuid",
+                    ts: "string"
+                }
+            },
+            {
+                name: "archived_at",
+                description: "Timestamp when the task was archived",
+                optional: true,
+                sqlDef: "archived_at timestamptz",
+                type: {
+                    name: "string",
+                    sql: "timestamptz",
+                    ts: "string"
+                }
+            },
+            {
+                name: "completed_at",
+                description: "Timestamp when the task was marked as completed",
+                optional: true,
+                sqlDef: "completed_at timestamptz",
+                type: {
+                    name: "string",
+                    sql: "timestamptz",
+                    ts: "string"
+                }
+            },
+            {
+                name: "created_at",
+                description: "Date and time the task was created",
+                hasDefault: true,
+                sqlDef: "created_at timestamptz not null default now()",
+                type: {
+                    name: "string",
+                    sql: "timestamptz",
+                    ts: "string"
+                }
+            },
+            {
+                name: "created_by_user_id",
+                description: "The user who created the task",
+                optional: true,
+                sqlDef: "created_by_user_id uuid",
+                type: {
+                    name: "string",
+                    sql: "uuid",
+                    ts: "string"
+                }
+            },
+            {
+                name: "description_markdown",
+                description: "Detailed description of the task in markdown",
+                hasDefault: true,
+                sqlDef: "description_markdown text not null default ''",
+                type: {
+                    name: "string",
+                    sql: "text",
+                    ts: "string"
+                }
+            },
+            {
+                name: "id",
+                description: "Unique id of the task",
+                hasDefault: true,
+                primary: true,
+                sqlDef: "id uuid not null default gen_random_uuid()",
+                type: {
+                    name: "string",
+                    sql: "uuid",
+                    ts: "string"
+                }
+            },
+            {
+                name: "status",
+                description: "Current status of the task",
+                hasDefault: true,
+                sqlDef: "status public.task_status not null default 'active'",
+                type: {
+                    name: "string",
+                    sql: "public",
+                    ts: "string"
+                }
+            },
+            {
+                name: "title",
+                description: "The title of the task",
+                sqlDef: "title text not null",
+                type: {
+                    name: "string",
+                    sql: "text",
+                    ts: "string"
+                }
+            },
+            {
+                name: "updated_at",
+                description: "Date and time the task was last updated",
+                hasDefault: true,
+                sqlDef: "updated_at timestamptz not null default now()",
+                type: {
+                    name: "string",
+                    sql: "timestamptz",
+                    ts: "string"
+                }
+            },
+            {
+                name: "updated_by_user_id",
+                description: "The user who last updated the task",
+                optional: true,
+                sqlDef: "updated_by_user_id uuid",
+                type: {
+                    name: "string",
+                    sql: "uuid",
+                    ts: "string"
+                }
+            }
+        ],
+        zodSchema: TaskSchema,
+        zodInsertSchema: Task_insertSchema,
+    } as TypeDef<Task,Task_insert> satisfies TypeDef<Task,Task_insert>,
+
+    User: {
+        name: "User",
+        description: "A user",
+        primaryKey: "id",
+        sqlSchema: "public",
+        sqlTable: "user",
+        type: "type",
+        props: [
+            {
+                name: "created_at",
+                description: "Date and time the user was created",
+                hasDefault: true,
+                sqlDef: "created_at timestamptz not null default now()",
+                type: {
+                    name: "string",
+                    sql: "timestamptz",
+                    ts: "string"
+                }
+            },
+            {
+                name: "email",
+                description: "Email address of the user (unique)",
+                sqlDef: "email text not null",
+                type: {
+                    name: "string",
+                    sql: "text",
+                    ts: "string"
+                }
+            },
+            {
+                name: "hero_image_path",
+                description: "Path to the user's hero image in the 'accounts' storage bucket: {account_id}/users/{user_id}/...",
+                optional: true,
+                sqlDef: "hero_image_path text",
+                type: {
+                    name: "string",
+                    sql: "text",
+                    ts: "string"
+                }
+            },
+            {
+                name: "id",
+                description: "Unique id of the user",
+                hasDefault: true,
+                primary: true,
+                sqlDef: "id uuid not null default gen_random_uuid()",
+                type: {
+                    name: "string",
+                    sql: "uuid",
+                    ts: "string"
+                }
+            },
+            {
+                name: "name",
+                description: "Full name of the user",
+                sqlDef: "name text not null",
+                type: {
+                    name: "string",
+                    sql: "text",
+                    ts: "string"
+                }
+            },
+            {
+                name: "profile_image_path",
+                description: "Path to the user's profile image in the 'accounts' storage bucket: {account_id}/users/{user_id}/...",
+                optional: true,
+                sqlDef: "profile_image_path text",
+                type: {
+                    name: "string",
+                    sql: "text",
+                    ts: "string"
+                }
+            },
+            {
+                name: "updated_at",
+                description: "Date and time the user was last updated",
+                hasDefault: true,
+                sqlDef: "updated_at timestamptz not null default now()",
+                type: {
+                    name: "string",
+                    sql: "timestamptz",
+                    ts: "string"
+                }
+            }
+        ],
+        zodSchema: UserSchema,
+        zodInsertSchema: User_insertSchema,
+    } as TypeDef<User,User_insert> satisfies TypeDef<User,User_insert>,
+
+
+} as const;
+
+export const typeList=[
+    typeDefs.Account,
+    typeDefs.AccountInvite,
+    typeDefs.AccountMembership,
+    typeDefs.Task,
+    typeDefs.User,
+] as const;

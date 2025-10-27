@@ -1,0 +1,20 @@
+- Load /profile as a signed-in user; see avatar (or placeholder), display name, and a clearly labeled read-only email.
+- If no avatar exists, confirm a neutral avatar placeholder shows.
+- If no hero image exists, confirm a soft surface frame shows.
+- Attempt to edit the name; clear it to empty, try Save, and see an inline required error.
+- Enter a name with only spaces, try Save, and see the inline required error.
+- Enter a valid new display name and click Save; changes persist after refresh.
+- Click Cancel after changing the name; confirm original name is restored and no changes persist.
+- Upload/replace the profile avatar; preview updates immediately, then Save to persist.
+- Remove the profile avatar; placeholder returns, then Save to persist removal.
+- Upload/replace the hero image; banner updates immediately, then Save to persist.
+- Remove the hero image; soft frame returns, then Save to persist removal.
+- Confirm image action buttons have accessible labels (Upload avatar, Remove avatar, Upload banner).
+- Verify the email field cannot be focused or edited and is labeled read-only.
+- In memberships, see all accounts with names and role badges for each.
+- Inspect a role badge to confirm it includes accessible text (e.g., via tooltip or screen reader text).
+- Click Switch on an account; active workspace updates without a full page change (e.g., header/context reflects the new account).
+- Use Copy account name (or ID) on a row; paste to verify correct value is copied.
+- Click “Open public profile” to open profile/[user-id] in a new tab; page loads and shows public view.
+- Use “Copy link to public profile”; paste to verify the URL is correct.
+- After an image upload, verify the user record stores only a storage path (not a full URL) if visible in UI/dev tools.

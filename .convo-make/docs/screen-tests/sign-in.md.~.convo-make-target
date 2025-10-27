@@ -1,0 +1,310 @@
+> define
+__makeRoot="../../.."
+__makeFile="make.convo"
+__makeOut="docs/screen-tests/sign-in.md"
+__model="gpt-5"
+
+> system
+You are generating content that will be directly written to "docs/screen-tests/sign-in.md".
+DO NOT include a preamble or postamble.
+
+Always respond with the full content for "docs/screen-tests/sign-in.md", even if you are making an
+small or incremental update.
+
+> appendUser
+<app-description>
+## Task Bee
+
+A minimal, light-hearted task manager for companies. Task Bee helps teams capture, organize, complete, and archive tasks, with rich markdown details and simple sharing.
+
+### Overview
+Task Bee enables signed-in users to manage their organization’s tasks in a multi-tenant setup. Tasks can include detailed markdown content with edit and preview modes, can be marked complete, archived, and exported as a markdown file. Account admins can manage account details and user roles, while all signed-in users gain access to dashboards and task detail pages.
+
+## Features
+
+- Task management
+  - Add tasks
+  - Remove tasks
+  - Mark tasks as completed
+  - Archive tasks
+  - Download tasks as a markdown file
+  - Store detailed task information in markdown format
+    - Includes both edit and preview modes
+  - Share a link to a task detail page
+
+- Account and access
+  - Multi-tenant accounts with role-based visibility and permissions
+  - Invite users to an account via an invite link
+  - View account info, logo, and ID
+  - Admins can edit account info and manage member roles
+  - View user profiles (self and public view)
+  - Switch between accounts
+
+## User Roles
+
+- guest
+  - A user not signed in
+- default
+  - Default role for a signed-in user belonging to an account
+- manager
+  - An account manager with elevated capabilities
+- admin
+  - A super admin that can manage any account and its users
+
+## Screens
+
+### Landing page
+- Route: /
+- Seen by roles: all
+- Description: A marketing page for Task Bee with a large, eye-catching full-screen hero carousel highlighting the app’s top value propositions.
+
+### Register
+- Route: /register
+- Seen by roles: all
+- Description: Register a new user and create an organizational account. If already signed in, a message indicates the user is already registered.
+- Inputs:
+  - name
+  - email
+  - Organization name
+  - password
+
+### Sign-in
+- Route: /sign-in
+- Seen by roles: all
+- Description: Sign in as an existing user. If already signed in, a message indicates the user is already signed in.
+- Inputs:
+  - email
+  - password
+
+### Dashboard
+- Route: /dashboard
+- Seen by roles: all signed-in users
+- Description: The central place for managing tasks for the current company/account.
+- Capabilities:
+  - Add, remove tasks
+  - Mark tasks as completed
+  - Archive tasks
+  - Download tasks as markdown
+
+### Task Detail
+- Route: /task/[task-id]
+- Seen by roles: all signed-in users
+- Description: A dedicated page to manage and view a single task.
+- Capabilities:
+  - View and edit task details in markdown
+    - Toggle between edit and preview modes
+  - Mark as completed
+  - Archive task
+  - Download this task as markdown
+  - Share a link to this task
+
+### Account
+- Route: /account
+- Seen by roles: all signed-in users
+- Description: Shows account information and membership.
+- Details:
+  - Displays:
+    - name
+    - logo
+    - id (muted)
+  - Admin-only:
+    - Edit account info
+    - Invite users via invite link:
+      - https://${location.host}/accept-account-invite/${inviteCode}
+  - Users section:
+    - Grid of user cards (name + profile picture), linking to each user’s public profile
+  - Link to create a new account
+
+### Accept Account Invite
+- Route: /accept-account-invite/[invite-code]
+- Seen by roles: all
+- Description: Accept or decline an invite to join an account. If not signed in, users are prompted to sign in first.
+
+### Profile
+- Route: /profile
+- Seen by roles: all signed-in users
+- Description: The private profile page for the current user.
+- Capabilities:
+  - View personal info
+  - View all accounts the user belongs to, with option to switch accounts
+  - Edit profile fields, except email address (not editable)
+
+### Public Profile
+- Route: /profile/[user-id]
+- Seen by roles: all signed-in users
+- Description: Public-facing profile page as seen by other users within the account context.
+- Admin functionality:
+  - Admins can see the user’s role
+  - Admins can change the user’s role
+  - Admins cannot change their own role
+
+## Task Model and Behaviors
+
+- A task contains:
+  - Title and status (active, completed, archived)
+  - Detailed description in markdown
+  - Metadata related to its account
+- Actions:
+  - Edit details in markdown with a live preview mode
+  - Mark complete for workflow visibility
+  - Archive to keep the dashboard focused while retaining historical context
+  - Export/download as a markdown file for offline sharing or documentation
+  - Share link to the task detail page with teammates
+
+## Styling
+
+- Framework: Tailwind CSS
+- Look and feel:
+  - Minimalistic
+  - Light-hearted
+  - Good use of negative space
+  - Gradient backgrounds
+  - Rounded corners and surfaces
+- Custom color palette:
+  - CSS variables:
+    - --light-blue: #a8d5e2ff
+    - --orange-web: #f9a620ff (Brand color)
+    - --mustard: #ffd449ff
+    - --forest-green: #548c2fff (Secondary)
+    - --pakistan-green: #104911ff
+- Brand usage rules:
+  - Use the brand color (#f9a620ff) sparingly
+  - Reserve the brand color primarily for the most important CTAs or as a subtle thin border for highlights when not a main CTA
+
+## Summary
+
+Task Bee streamlines task tracking for companies with a clear, role-aware experience. Users can collaborate on tasks, enrich them with markdown detail, and maintain clean dashboards by completing and archiving items. Admins manage their accounts and memberships, while a thoughtful, minimal visual style ensures focus and clarity.
+</app-description>
+
+> appendUser
+<all-screens>
+[
+    {
+        "name": "Landing page",
+        "route": "index",
+        "description": "Marketing home with a full-screen hero carousel highlighting Task Bee’s top value propositions."
+    },
+    {
+        "name": "Register",
+        "route": "register",
+        "description": "Register a new user and create an organization; shows a notice if already signed in."
+    },
+    {
+        "name": "Sign-in",
+        "route": "sign-in",
+        "description": "Sign in to an existing account; shows a notice if already signed in."
+    },
+    {
+        "name": "Dashboard",
+        "route": "dashboard",
+        "description": "Manage company tasks: add, remove, complete, archive, and download as markdown."
+    },
+    {
+        "name": "Task Detail",
+        "route": "task/[taskId]",
+        "description": "View and edit a single task in markdown, toggle preview, complete, archive, and download."
+    },
+    {
+        "name": "Account",
+        "route": "account",
+        "description": "View account info (name, logo, id), manage users, admins can edit info and generate invite links."
+    },
+    {
+        "name": "Accept Account Invite",
+        "route": "accept-account-invite/[inviteCode]",
+        "description": "Accept or decline an account invite; prompts sign-in if the user is not authenticated."
+    },
+    {
+        "name": "Profile",
+        "route": "profile",
+        "description": "Private user profile: view info, edit (except email), and switch between joined accounts."
+    },
+    {
+        "name": "Public Profile",
+        "route": "profile/[userId]",
+        "description": "Public-facing profile within the account; admins can view/change the user’s role (not their own)."
+    }
+]
+</all-screens>
+
+> appendUser
+<screen-description>
+# Screen Description
+
+Name: Sign-in
+Route: /sign-in
+
+## Description
+A focused, minimal sign-in screen for existing users. Guests see a centered card with:
+- Logo header and concise welcome copy
+- Email and password inputs
+- A single primary CTA button: “Sign in” (uses the brand color)
+- Subtle inline validation and error feedback
+- A small, low-emphasis link to “Create an account” for new users
+
+If the user is already signed in, the page shows a friendly notice instead of the form, with contextual actions (go to Dashboard, switch accounts via the main layout, or sign out). The design uses a stacked layout, generous negative space, and a soft gradient background. Buttons never have fixed widths, and copy is kept short. Brand accents outside the main CTA are limited to thin borders or focus rings.
+
+Form behaviors:
+- Email and password are required; inputs display errors inline when invalid
+- Submit is disabled during authentication and shows a lightweight “Signing in…” state
+- On success, the user is redirected to the previously requested route (if any) or to /dashboard
+- If the user arrived from an account invite, they are sent back to the acceptance flow after sign-in
+
+Accessibility:
+- Labels and aria-invalid states are applied to inputs
+- The primary CTA is reachable by keyboard and shows a brand-tinted focus ring
+- Icon-only controls include aria-labels where present
+
+## Actions
+- Enter email and password
+- Submit to sign in
+- View inline validation errors and retry
+- If already signed in, proceed to Dashboard or sign out
+- Continue back to the originally requested route after successful sign-in (e.g., invite acceptance)
+
+## Links
+- /accept-account-invite/[inviteCode]: Return to an in-progress invite flow after signing in
+- /task/[taskId]: Return to a previously requested task detail page after signing in (when applicable)
+</screen-description>
+
+> appendUser
+Generate a simple set of tests to test all the features of the screens. The tests should be 
+    should be a smile bullet list of short sentences describing features to test.
+
+    The test should be able to be completed by a human in 10 minutes or less. Do not include more
+    than 25 bullet points.
+
+> nop
+//_END_MAKE_TARGET_INPUT_
+
+
+@time 2025-10-27T06:48:34-04:00
+@tokenUsage 2214 / 2611 / $0.00603125
+@model gpt-5-2025-08-07
+> assistant
+- Open /sign-in as a guest; centered logo and welcome copy are visible.
+- Email and password inputs exist and have associated labels.
+- Password input masks characters.
+- A low-emphasis “Create an account” link is visible.
+- The “Sign in” CTA uses the brand color and is not fixed-width.
+- Click Sign in with both fields empty; inline errors appear for both fields.
+- Inputs with errors have aria-invalid=true.
+- Enter an invalid email format with any password; email shows a format error.
+- Correct inputs clear inline errors and remove aria-invalid.
+- Tab order is Email -> Password -> Sign in -> Create an account; CTA shows a brand-tinted focus ring.
+- Press Enter in the Password field submits the form.
+- Submit valid credentials; button disables and shows “Signing in…” until complete; no double-submit.
+- Submit with a wrong password; an inline auth error appears and field values remain.
+- Sign in successfully with no prior route; you land on /dashboard.
+- Start from a protected /task/[taskId] while logged out; after sign-in you return to that task page.
+- Start from /accept-account-invite/[inviteCode] while logged out; after sign-in you return to the invite acceptance screen.
+- While signed in, visit /sign-in; the form is replaced by a friendly notice with actions.
+- From the notice, use “Go to Dashboard” to reach /dashboard.
+- From the notice, use “Sign out” and confirm the sign-in form reappears.
+- Click “Create an account”; you navigate to /register.
+- If any icon-only control is present, it has an aria-label (otherwise note none present).
+- Brand accents beyond the primary CTA are limited to thin borders or focus rings.
+
+
+
+> user

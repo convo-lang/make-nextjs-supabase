@@ -1,0 +1,304 @@
+/**
+ * Task status states
+ */
+export type TaskStatus="active"|"completed"|"archived";
+
+/**
+ * Role types for users within an account
+ */
+export type UserRole="guest"|"default"|"manager"|"admin";
+
+/**
+ * An account/organization (tenant)
+ * @table account
+ * @schema public
+ */
+export interface Account
+{
+    /**
+     * Unique id of the account
+     */
+    id:string;
+    /**
+     * Date and time the account was created
+     */
+    created_at:string;
+    /**
+     * Date and time the account was last updated
+     */
+    updated_at:string;
+    /**
+     * Display name of the account
+     */
+    name:string;
+    /**
+     * Path to the account logo image in the 'accounts' storage bucket
+     */
+    logo_image_path?:string;
+    /**
+     * Path to the account hero image in the 'accounts' storage bucket
+     */
+    hero_image_path?:string;
+}
+
+/**
+ * @insertFor Account
+ * @table account
+ * @schema public
+ */
+export interface Account_insert
+{
+    id?:string;
+    created_at?:string;
+    updated_at?:string;
+    name:string;
+    logo_image_path?:string;
+    hero_image_path?:string;
+}
+
+/**
+ * An invitation to join an account via invite link
+ * @table account_invite
+ * @schema public
+ */
+export interface AccountInvite
+{
+    /**
+     * Unique id of the account invite
+     */
+    id:string;
+    /**
+     * Date and time the invite was created
+     */
+    created_at:string;
+    /**
+     * The account this invite grants access to
+     */
+    account_id:string;
+    /**
+     * The user who created/sent the invite
+     */
+    invited_by_user_id?:string;
+    /**
+     * The invite code to be used in the accept link
+     */
+    code:string;
+    /**
+     * Optional email the invite was intended for
+     */
+    email?:string;
+    /**
+     * The role the invite grants upon acceptance
+     */
+    role:string;
+    /**
+     * When the invite expires (if set)
+     */
+    expires_at?:string;
+    /**
+     * When the invite was accepted
+     */
+    accepted_at?:string;
+    /**
+     * The user who accepted the invite
+     */
+    accepted_by_user_id?:string;
+    /**
+     * When the invite was revoked (if revoked)
+     */
+    revoked_at?:string;
+}
+
+/**
+ * @insertFor AccountInvite
+ * @table account_invite
+ * @schema public
+ */
+export interface AccountInvite_insert
+{
+    id?:string;
+    created_at?:string;
+    account_id:string;
+    invited_by_user_id?:string;
+    code:string;
+    email?:string;
+    role?:string;
+    expires_at?:string;
+    accepted_at?:string;
+    accepted_by_user_id?:string;
+    revoked_at?:string;
+}
+
+/**
+ * Links a user to an account with a role
+ * @table account_membership
+ * @schema public
+ */
+export interface AccountMembership
+{
+    /**
+     * Unique id of the account membership
+     */
+    id:string;
+    /**
+     * Date and time the membership was created
+     */
+    created_at:string;
+    /**
+     * Date and time the member last accessed the account
+     */
+    last_accessed_at:string;
+    /**
+     * The user this membership belongs to
+     */
+    user_id:string;
+    /**
+     * The account this membership belongs to
+     */
+    account_id:string;
+    /**
+     * The role of the user within the account
+     */
+    role:string;
+}
+
+/**
+ * @insertFor AccountMembership
+ * @table account_membership
+ * @schema public
+ */
+export interface AccountMembership_insert
+{
+    id?:string;
+    created_at?:string;
+    last_accessed_at?:string;
+    user_id:string;
+    account_id:string;
+    role?:string;
+}
+
+/**
+ * A task belonging to an account
+ * @table task
+ * @schema public
+ */
+export interface Task
+{
+    /**
+     * Unique id of the task
+     */
+    id:string;
+    /**
+     * Date and time the task was created
+     */
+    created_at:string;
+    /**
+     * Date and time the task was last updated
+     */
+    updated_at:string;
+    /**
+     * The account this task belongs to
+     */
+    account_id:string;
+    /**
+     * The user who created the task
+     */
+    created_by_user_id?:string;
+    /**
+     * The user who last updated the task
+     */
+    updated_by_user_id?:string;
+    /**
+     * The title of the task
+     */
+    title:string;
+    /**
+     * Current status of the task
+     */
+    status:string;
+    /**
+     * Detailed description of the task in markdown
+     */
+    description_markdown:string;
+    /**
+     * Timestamp when the task was marked as completed
+     */
+    completed_at?:string;
+    /**
+     * Timestamp when the task was archived
+     */
+    archived_at?:string;
+}
+
+/**
+ * @insertFor Task
+ * @table task
+ * @schema public
+ */
+export interface Task_insert
+{
+    id?:string;
+    created_at?:string;
+    updated_at?:string;
+    account_id:string;
+    created_by_user_id?:string;
+    updated_by_user_id?:string;
+    title:string;
+    status?:string;
+    description_markdown?:string;
+    completed_at?:string;
+    archived_at?:string;
+}
+
+/**
+ * A user
+ * @table user
+ * @schema public
+ */
+export interface User
+{
+    /**
+     * Unique id of the user
+     */
+    id:string;
+    /**
+     * Date and time the user was created
+     */
+    created_at:string;
+    /**
+     * Date and time the user was last updated
+     */
+    updated_at:string;
+    /**
+     * Full name of the user
+     */
+    name:string;
+    /**
+     * Email address of the user (unique)
+     */
+    email:string;
+    /**
+     * Path to the user's profile image in the 'accounts' storage bucket: {account_id}/users/{user_id}/...
+     */
+    profile_image_path?:string;
+    /**
+     * Path to the user's hero image in the 'accounts' storage bucket: {account_id}/users/{user_id}/...
+     */
+    hero_image_path?:string;
+}
+
+/**
+ * @insertFor User
+ * @table user
+ * @schema public
+ */
+export interface User_insert
+{
+    id?:string;
+    created_at?:string;
+    updated_at?:string;
+    name:string;
+    email:string;
+    profile_image_path?:string;
+    hero_image_path?:string;
+}

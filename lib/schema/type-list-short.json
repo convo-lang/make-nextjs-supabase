@@ -1,0 +1,105 @@
+[
+    {
+        "name": "Account",
+        "description": "An account/organization (tenant)",
+        "primaryKey": "id",
+        "sqlSchema": "public",
+        "sqlTable": "account",
+        "type": "type",
+        "props": [
+            "created_at",
+            "hero_image_path",
+            "id",
+            "logo_image_path",
+            "name",
+            "updated_at"
+        ]
+    },
+    {
+        "name": "AccountInvite",
+        "description": "An invitation to join an account via invite link",
+        "primaryKey": "id",
+        "sqlSchema": "public",
+        "sqlTable": "account_invite",
+        "type": "type",
+        "props": [
+            "accepted_at",
+            "accepted_by_user_id",
+            "account_id",
+            "code",
+            "created_at",
+            "email",
+            "expires_at",
+            "id",
+            "invited_by_user_id",
+            "revoked_at",
+            "role"
+        ]
+    },
+    {
+        "name": "AccountMembership",
+        "description": "Links a user to an account with a role",
+        "primaryKey": "id",
+        "sqlSchema": "public",
+        "sqlTable": "account_membership",
+        "type": "type",
+        "props": [
+            "account_id",
+            "created_at",
+            "id",
+            "last_accessed_at",
+            "role",
+            "user_id"
+        ]
+    },
+    {
+        "name": "Task",
+        "description": "A task belonging to an account",
+        "primaryKey": "id",
+        "sqlSchema": "public",
+        "sqlTable": "task",
+        "type": "type",
+        "props": [
+            "account_id",
+            "archived_at",
+            "completed_at",
+            "created_at",
+            "created_by_user_id",
+            "description_markdown",
+            "id",
+            "status",
+            "title",
+            "updated_at",
+            "updated_by_user_id"
+        ]
+    },
+    {
+        "name": "TaskStatus",
+        "description": "Task status states",
+        "type": "enum",
+        "props": []
+    },
+    {
+        "name": "User",
+        "description": "A user",
+        "primaryKey": "id",
+        "sqlSchema": "public",
+        "sqlTable": "user",
+        "type": "type",
+        "props": [
+            "created_at",
+            "email",
+            "hero_image_path",
+            "id",
+            "name",
+            "profile_image_path",
+            "updated_at"
+        ]
+    },
+    {
+        "name": "UserRole",
+        "description": "Role types for users within an account",
+        "type": "enum",
+        "props": []
+    }
+]

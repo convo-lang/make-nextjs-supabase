@@ -1,0 +1,8 @@
+[in]
+?hash-props:[{"outType":"array(struct(\n    # User friendly name of the screen\n    name: string\n    # Route within the pages directory of a NextJS app. Route parameters should use square brackets\n    # and should NOT include a file extension.\n    # \n    # - Example of route to profile page: profile\n    # - Example of a route to a task detail page: task/[taskId]\n    route: string\n    # A short description of the screen\n    description: string\n))"}]
+context/screens/**.md:4041fdN67AyBzZkYK9dPM26ALXVR2XBi1VhDdqqA2sM
+docs/app-description.md:ZtbaBLuPKaTbHE4A-uNxMUXXLFaVwCMrc-xhJ5neVtY
+lib/schema/types-ts.ts:_iR_dSxbINLe3hQjoIFis5NIjFLBxjZT57b4bDiktWc
+:Sc-RA7L4-AHGUIYFvaBeBhRNMAb-6C4AS7ozAFv9LgA
+[out]
+docs/screens.json:es04ivGJbsDlov4t8POvXhbyLuhImpcDPfB99yQCGmM

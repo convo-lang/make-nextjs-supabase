@@ -1,0 +1,20 @@
+- Visit /register as a guest and see a centered form with Name, Email, Organization name, Password, and a “Create account” button.
+- Confirm each input has a visible label and is focusable in a logical tab order.
+- Ensure the “Create account” button label is correct and is the only primary CTA.
+- Toggle password visibility; text shows/hides and the toggle has an accessible label.
+- Submit with all fields empty; inline required errors appear and invalid fields get aria-invalid="true".
+- Enter an invalid email format and submit; see a specific email format error and aria-invalid on Email.
+- Enter a short password (<8 chars); see guidance about minimum length.
+- Add leading/trailing spaces to the email; on submit, whitespace is trimmed.
+- When submitting, the primary button disables, shows a subtle loading state, and the form becomes read-only.
+- Force a server error (e.g., reuse an existing email); see a descriptive error announced via an aria-live region.
+- Complete a successful sign-up with immediate session; briefly see success then land on the dashboard.
+- After successful sign-up, verify the new organization name appears in the app (e.g., dashboard/header).
+- Complete a sign-up flow that requires email confirmation; see a “Check your email” notice with clear instructions.
+- If already signed in, the form is replaced by a friendly “You’re already registered” notice with a link to proceed.
+- If an invite code is present, verify a link to accept-account-invite/[inviteCode] is available instead of creating a new org.
+- Click “I already have an account”; confirm it navigates to /sign-in.
+- Press Enter from a focused input when the form is valid; the form submits.
+- Tab through to ensure visible focus states on inputs, toggle, and buttons.
+- Confirm error messages and status changes are announced to screen readers (aria-live works).
+- Verify brand color is used only for the primary “Create account” button; secondary actions use low-emphasis styles.

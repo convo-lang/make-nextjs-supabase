@@ -1,0 +1,24 @@
+- Open /profile/[userId] while signed in and verify the display name, avatar, and optional hero image are visible; email is not shown.
+- Verify the avatar shows a neutral placeholder when the user has no avatar.
+- Verify the hero image loads responsively and falls back gracefully if missing.
+- Click “Copy link” and confirm a success toast appears and the clipboard contains the canonical /profile/[userId] URL.
+- Paste the copied link in a new tab while signed in and confirm the same profile loads.
+- Paste the copied link in a new tab while signed out and confirm you are prompted to sign in.
+- If “Recent activity” is present, verify each task title is a link to its Task Detail page and opens correctly.
+- If no recent activity exists, verify the section is hidden or shows a non-blocking empty state.
+- As a non-admin user, verify no role controls are visible (you cannot see or edit roles).
+- As an admin viewing another user, verify the current role is shown with options: guest, default, manager, admin.
+- As an admin viewing your own profile, verify the role control is disabled with an explanatory hint.
+- As an admin, initiate a role change for another user and confirm a confirmation dialog appears.
+- Click Cancel in the confirm dialog and verify the role remains unchanged.
+- Confirm the role change and verify the role updates immediately in the UI.
+- Refresh the page and verify the updated role persists.
+- Switch to a different account and verify the user’s role in that account remains unchanged (multi-tenant isolation).
+- Switch back to the original account and verify the updated role is still applied there.
+- Verify long display names do not overflow or break the layout.
+- Navigate through the page using only the keyboard and confirm all controls (including the confirm dialog) are accessible with visible focus.
+- Trigger the confirm dialog and verify focus is trapped within the dialog until dismissed.
+- Trigger “Copy link” via keyboard and confirm the success message is announced to screen readers (ARIA live region).
+- Inspect the DOM to verify the user’s email is not present anywhere on the page.
+- Verify brand usage is subtle (no overuse of the brand color) and the page maintains a minimal, spacious layout.
+- Confirm the page loads quickly and interactions (copy, role change) complete without noticeable lag.
