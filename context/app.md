@@ -9,6 +9,12 @@ Task Bee allows users to track a list of tasks for their company
 - manager - An account manager
 - admin - A super admin that can manage any account
 
-## Workflows
-- Create Task - The user creates a task
-- Complete Task - The user marks a task as complete
+## Requirements
+- User can download tasks as markdown file
+- User can add tasks
+- User can remove tasks
+- User can mark tasks as completed
+- User can archive tasks
+- User can share link to task
+- User can store detailed information about a task in markdown format
+  - Show include an edit a preview mode
